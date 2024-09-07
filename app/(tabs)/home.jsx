@@ -1,11 +1,188 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import React from "react";
-
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Colors } from "../../constants/Colors";
+import BannerSales from "../../components/BannerSales";
+import Heading from "../../components/Heading";
+import ViewMore from "../../components/ViewMore";
+import CategoryItem from "../../components/CategoryItem";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Fontisto from "@expo/vector-icons/Fontisto";
 const Home = () => {
+    const saleOffer = {
+        courseName: "PROJECT MANAGEMENT",
+        percentSales: 20,
+        slug: "",
+        image: "",
+    };
     return (
-        <View>
-            <Text>Home</Text>
-        </View>
+        <ScrollView>
+            <View
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingVertical: 40,
+                    paddingHorizontal: 30,
+                    backgroundColor: Colors.primaryBlue,
+                }}
+            >
+                <View>
+                    <Text
+                        style={{
+                            color: Colors.primaryWhite,
+                            fontSize: 24,
+                            fontWeight: 700,
+                        }}
+                    >
+                        Hello, Roise
+                    </Text>
+                    <Text
+                        style={{
+                            color: Colors.primaryWhite,
+                            fontSize: 14,
+                            fontWeight: 600,
+                        }}
+                    >
+                        What do you want to learn today?
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 30,
+                    }}
+                >
+                    <Pressable>
+                        <Ionicons
+                            name="cart-outline"
+                            size={30}
+                            color={Colors.primaryWhite}
+                        />
+                    </Pressable>
+                    <Pressable>
+                        <Ionicons
+                            name="notifications-outline"
+                            size={30}
+                            color={Colors.primaryWhite}
+                        />
+                    </Pressable>
+                </View>
+            </View>
+            <BannerSales saleOffer={saleOffer}></BannerSales>
+            <View
+                style={{
+                    padding: 40,
+                }}
+            >
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        padding: 20,
+                    }}
+                >
+                    <Heading title={"Categories"}></Heading>
+                    <ViewMore></ViewMore>
+                </View>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        gap: 30,
+                        marginVertical: 30,
+                    }}
+                >
+                    <CategoryItem
+                        icon={
+                            <Ionicons
+                                name="trending-up"
+                                size={30}
+                                color="white"
+                            />
+                        }
+                        bgColor={Colors.primaryBlue}
+                        name={"Business"}
+                    ></CategoryItem>
+                    <CategoryItem
+                        icon={
+                            <FontAwesome6
+                                name="pen-nib"
+                                size={30}
+                                color="white"
+                            />
+                        }
+                        bgColor={Colors.primaryPurple}
+                        name={"Design"}
+                    ></CategoryItem>
+                </View>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        gap: 30,
+                        marginVertical: 30,
+                    }}
+                >
+                    <CategoryItem
+                        icon={
+                            <MaterialIcons
+                                name="code"
+                                size={30}
+                                color="white"
+                            />
+                        }
+                        bgColor={"red"}
+                        name={"Code"}
+                    ></CategoryItem>
+                    <CategoryItem
+                        icon={
+                            <MaterialCommunityIcons
+                                name="file-document-outline"
+                                size={30}
+                                color="white"
+                            />
+                        }
+                        bgColor={"blue"}
+                        name={"Design"}
+                    ></CategoryItem>
+                </View>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        gap: 30,
+                        marginVertical: 30,
+                    }}
+                >
+                    <CategoryItem
+                        icon={
+                            <MaterialIcons
+                                name="video-camera-back"
+                                size={30}
+                                color="white"
+                            />
+                        }
+                        bgColor={Colors.primaryPurple}
+                        name={"Movie"}
+                    ></CategoryItem>
+                    <CategoryItem
+                        icon={
+                            <Fontisto name="world-o" size={24} color="black" />
+                        }
+                        bgColor={Colors.primaryBlue}
+                        name={"Language"}
+                    ></CategoryItem>
+                </View>
+            </View>
+        </ScrollView>
     );
 };
 
