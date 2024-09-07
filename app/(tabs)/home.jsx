@@ -246,6 +246,31 @@ const Home = () => {
                         horizontal={true}
                     />
                 </View>
+                {/* Recommend */}
+                <View
+                    style={{
+                        marginTop: 40,
+                    }}
+                >
+                    <View
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Heading title={"Recommended for you"}></Heading>
+                        <ViewMore></ViewMore>
+                    </View>
+                    <FlatList
+                        data={popularCourses}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <CourseItem course={item}></CourseItem>
+                        )}
+                        horizontal={true}
+                    />
+                </View>
             </View>
         </ScrollView>
     );
