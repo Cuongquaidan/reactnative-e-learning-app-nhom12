@@ -4,7 +4,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "../constants/Colors";
 
-const CourseItem = ({ course }) => {
+const CourseItem = ({ course, isHorizontal = false }) => {
     const {
         id,
         title,
@@ -23,18 +23,26 @@ const CourseItem = ({ course }) => {
                 borderRadius: 4,
                 borderWidth: 1,
                 borderColor: Colors.lightGray,
-                maxWidth: 350,
-                marginRight: 40,
+                maxWidth: isHorizontal ? "100%" : 350,
+                marginRight: isHorizontal ? 0 : 40,
                 marginVertical: 40,
+                display: "flex",
+                flexDirection: isHorizontal ? "row" : "colum",
+                alignItems: "center",
+                gap: isHorizontal ? 20 : 0,
             }}
         >
             <Image
                 source={{ uri: image }}
-                style={{ width: "100%", height: 200 }}
+                style={{
+                    width: isHorizontal ? "25%" : "100%",
+                    height: isHorizontal ? "90%" : 150,
+                }}
             />
             <View
                 style={{
                     marginTop: 40,
+                    flexShrink: 1,
                 }}
             >
                 <View
