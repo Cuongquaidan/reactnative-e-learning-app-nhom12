@@ -4,17 +4,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "../constants/Colors";
 
-const CourseItem = ({ course, isHorizontal = false }) => {
-    const {
-        id,
-        title,
-        desc,
-        image,
-        price,
-        rating,
-        numberRating,
-        numberOfLessons,
-    } = course;
+const TeacherItem = ({ teacherInfo, isHorizontal = false }) => {
+    const { id, name, desc, address, image, rating, numberRating } =
+        teacherInfo;
 
     return (
         <View
@@ -29,7 +21,7 @@ const CourseItem = ({ course, isHorizontal = false }) => {
                 marginVertical: 40,
                 display: "flex",
                 flexDirection: isHorizontal ? "row" : "colum",
-                alignItems: "center",
+                alignItems: "flex-start",
                 gap: isHorizontal ? 20 : 0,
             }}
         >
@@ -39,6 +31,7 @@ const CourseItem = ({ course, isHorizontal = false }) => {
                     width: isHorizontal ? "35%" : "100%",
                     height: isHorizontal ? "90%" : 150,
                     borderRadius: 8,
+                    minWidth: 300,
                     borderRadius: 4,
                     borderWidth: 1,
                     borderColor: Colors.lightGray,
@@ -54,6 +47,7 @@ const CourseItem = ({ course, isHorizontal = false }) => {
                     style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
+                        width: "100%",
                     }}
                 >
                     <Text
@@ -62,7 +56,7 @@ const CourseItem = ({ course, isHorizontal = false }) => {
                             fontWeight: 700,
                         }}
                     >
-                        {title}
+                        {name}
                     </Text>
                     <MaterialIcons
                         name="bookmark-outline"
@@ -82,58 +76,40 @@ const CourseItem = ({ course, isHorizontal = false }) => {
                 </Text>
                 <Text
                     style={{
+                        fontSize: 16,
+                        color: Colors.primaryGray,
                         marginTop: 20,
-                        fontSize: 30,
-                        color: Colors.primaryBlue,
-                        fontWeight: 700,
                     }}
                 >
-                    ${price}
+                    {address}
                 </Text>
                 <View
                     style={{
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: 5,
                         marginVertical: 10,
                     }}
                 >
-                    <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
+                    <FontAwesome5
+                        name="star"
+                        size={24}
+                        color={Colors.primaryYellow}
+                    />
+                    <Text> {rating}</Text>
+                    <Text
+                        style={{
+                            color: Colors.primaryGray,
+                            paddingHorizontal: 8,
+                        }}
                     >
-                        <FontAwesome5
-                            name="star"
-                            size={24}
-                            color={Colors.primaryYellow}
-                        />
-                        <Text> {rating}</Text>
-                        <Text
-                            style={{
-                                color: Colors.primaryGray,
-                                paddingHorizontal: 8,
-                            }}
-                        >
-                            ({numberRating})
-                        </Text>
-                    </View>
-                    <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                        <Text
-                            style={{
-                                color: Colors.primaryGray,
-                            }}
-                        >
-                            <Text style={{ color: Colors.primaryBlack }}>
-                                {numberOfLessons}
-                            </Text>{" "}
-                            Lessons
-                        </Text>
-                    </View>
+                        ({numberRating})
+                    </Text>
                 </View>
             </View>
         </View>
     );
 };
 
-export default CourseItem;
+export default TeacherItem;

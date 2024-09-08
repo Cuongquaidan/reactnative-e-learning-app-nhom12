@@ -11,6 +11,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import CourseItem from "../../components/CourseItem";
+import TeacherItem from "../../components/TeacherItem";
 const Home = () => {
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
@@ -48,6 +49,35 @@ const Home = () => {
             rating: 4.5,
             numberRating: 1233,
             numberOfLessons: 18,
+        },
+    ];
+    const dataTeacher = [
+        {
+            id: 1,
+            name: "Robert Lewandosky",
+            desc: "IUH University",
+            address: "HCM city",
+            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            rating: 4.5,
+            numberRating: 1999,
+        },
+        {
+            id: 2,
+            name: "Messi",
+            desc: "IUH University",
+            address: "HCM city",
+            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            rating: 4.5,
+            numberRating: 1999,
+        },
+        {
+            id: 3,
+            name: "Ronaldo",
+            desc: "IUH University",
+            address: "HCM city",
+            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            rating: 4.5,
+            numberRating: 1999,
         },
     ];
     return (
@@ -287,16 +317,40 @@ const Home = () => {
                         <Heading title={"Courses that inspires"}></Heading>
                         <ViewMore></ViewMore>
                     </View>
-                    <FlatList
+                    {/* <FlatList
                         data={popularCourses}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
-                            <CourseItem
-                                course={item}
-                                isHorizontal={true}
-                            ></CourseItem>
+                            
                         )}
                         initialNumToRender={3}
+                    /> */}
+                    {popularCourses.slice(0, 3).map((item) => (
+                        <CourseItem
+                            course={item}
+                            isHorizontal={true}
+                        ></CourseItem>
+                    ))}
+                </View>
+                {/* Top Teacher */}
+                <View>
+                    <View
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Heading title={"Top teacher"}></Heading>
+                        <ViewMore></ViewMore>
+                    </View>
+                    <FlatList
+                        data={dataTeacher}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <TeacherItem teacherInfo={item}></TeacherItem>
+                        )}
+                        horizontal={true}
                     />
                 </View>
             </View>
