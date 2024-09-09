@@ -9,4 +9,5 @@ export const Colors = {
     primaryBlack: "#170f23",
     primaryGray: "#6D6D6D",
     primaryYellow: "#F5BF02",
+    secondaryLightGray: "#e6e4e4",
 };

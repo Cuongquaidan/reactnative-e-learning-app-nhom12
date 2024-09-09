@@ -327,6 +327,7 @@ const Home = () => {
                     /> */}
                     {popularCourses.slice(0, 3).map((item) => (
                         <CourseItem
+                            key={item.id}
                             course={item}
                             isHorizontal={true}
                         ></CourseItem>
