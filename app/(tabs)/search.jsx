@@ -12,6 +12,7 @@ import Heading from "../../components/Heading";
 import ViewMore from "../../components/ViewMore";
 import CourseItem from "../../components/CourseItem";
 import { Colors } from "../../constants/Colors";
+import HotTopic from "../../components/HotTopic";
 const Search = () => {
     const popularCourses = [
         {
@@ -44,6 +45,15 @@ const Search = () => {
             numberRating: 1233,
             numberOfLessons: 18,
         },
+    ];
+    const hotTopics = [
+        "Java",
+        "SQL",
+        "Javascript",
+        "Python",
+        "Digital marketing",
+        "Photoshop",
+        "Watercolor",
     ];
     return (
         <ScrollView
@@ -133,6 +143,24 @@ const Search = () => {
                     )}
                     horizontal={true}
                 />
+            </View>
+            {/* Hot topics */}
+            <View>
+                <Heading title={"Hot topics"}></Heading>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        rowGap: 20,
+                        flexWrap: "wrap",
+                        columnGap: 30,
+                        marginTop: 30,
+                    }}
+                >
+                    {hotTopics.map((item) => (
+                        <HotTopic topic={item}></HotTopic>
+                    ))}
+                </View>
             </View>
         </ScrollView>
     );
