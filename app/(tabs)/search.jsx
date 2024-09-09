@@ -7,12 +7,17 @@ import {
     TextInput,
 } from "react-native";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Heading from "../../components/Heading";
 import ViewMore from "../../components/ViewMore";
 import CourseItem from "../../components/CourseItem";
 import { Colors } from "../../constants/Colors";
 import HotTopic from "../../components/HotTopic";
+import CategoryItemFullRow from "../../components/CategoryItemFullRow";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Fontisto from "@expo/vector-icons/Fontisto";
 const Search = () => {
     const popularCourses = [
         {
@@ -119,10 +124,104 @@ const Search = () => {
                     </Text>
                 </Pressable>
             </View>
+            {/* Hot topics */}
+            <View
+                style={{
+                    marginTop: 30,
+                }}
+            >
+                <Heading title={"Hot topics"}></Heading>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        rowGap: 20,
+                        flexWrap: "wrap",
+                        columnGap: 30,
+                        marginTop: 30,
+                    }}
+                >
+                    {hotTopics.map((item) => (
+                        <HotTopic topic={item}></HotTopic>
+                    ))}
+                </View>
+            </View>
+            {/* Categories */}
+            <View
+                style={{
+                    marginVertical: 30,
+                }}
+            >
+                <Heading title={"Categories"}></Heading>
+                <View
+                    style={{
+                        display: "flex",
+                        marginTop: 30,
+                        gap: 30,
+                    }}
+                >
+                    <CategoryItemFullRow
+                        icon={
+                            <Ionicons
+                                name="trending-up"
+                                size={30}
+                                color={Colors.primaryBlue}
+                            />
+                        }
+                        name={"Business"}
+                    ></CategoryItemFullRow>
+                    <CategoryItemFullRow
+                        icon={
+                            <FontAwesome6
+                                name="pen-nib"
+                                size={30}
+                                color={Colors.primaryPurple}
+                            />
+                        }
+                        name={"Design"}
+                    ></CategoryItemFullRow>
+                    <CategoryItemFullRow
+                        icon={
+                            <MaterialIcons name="code" size={30} color="red" />
+                        }
+                        name={"Code"}
+                    ></CategoryItemFullRow>
+                    <CategoryItemFullRow
+                        icon={
+                            <MaterialCommunityIcons
+                                name="file-document-outline"
+                                size={30}
+                                color="blue"
+                            />
+                        }
+                        name={"Design"}
+                    ></CategoryItemFullRow>
+                    <CategoryItemFullRow
+                        icon={
+                            <MaterialIcons
+                                name="video-camera-back"
+                                size={30}
+                                color={Colors.primaryPurple}
+                            />
+                        }
+                        name={"Movie"}
+                    ></CategoryItemFullRow>
+                    <CategoryItemFullRow
+                        icon={
+                            <Fontisto
+                                name="world-o"
+                                size={24}
+                                color={Colors.primaryBlue}
+                            />
+                        }
+                        name={"Language"}
+                    ></CategoryItemFullRow>
+                </View>
+            </View>
             {/* Recommend */}
             <View
                 style={{
-                    marginTop: 40,
+                    paddingVertical: 40,
                 }}
             >
                 <View
@@ -143,24 +242,6 @@ const Search = () => {
                     )}
                     horizontal={true}
                 />
-            </View>
-            {/* Hot topics */}
-            <View>
-                <Heading title={"Hot topics"}></Heading>
-                <View
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        rowGap: 20,
-                        flexWrap: "wrap",
-                        columnGap: 30,
-                        marginTop: 30,
-                    }}
-                >
-                    {hotTopics.map((item) => (
-                        <HotTopic topic={item}></HotTopic>
-                    ))}
-                </View>
             </View>
         </ScrollView>
     );
