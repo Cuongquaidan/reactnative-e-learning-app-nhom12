@@ -4,6 +4,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "../constants/Colors";
 import { useRouter } from "expo-router";
+import Rating from "./Rating";
 
 const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
     const router = useRouter();
@@ -23,6 +24,8 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
         discount: 20,
         courseName: "UX Foundation: Introduction to User Experience Design",
         slug: "UX-UI-foundation",
+        rating: 4.5,
+        numberRating: 1880,
         source: [
             {
                 title: "Introduction",
@@ -180,24 +183,10 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
                         marginVertical: 10,
                     }}
                 >
-                    <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                        <FontAwesome5
-                            name="star"
-                            size={24}
-                            color={Colors.primaryYellow}
-                        />
-                        <Text> {rating}</Text>
-                        <Text
-                            style={{
-                                color: Colors.primaryGray,
-                                paddingHorizontal: 8,
-                            }}
-                        >
-                            ({numberRating})
-                        </Text>
-                    </View>
+                    <Rating
+                        numberRating={numberRating}
+                        rating={rating}
+                    ></Rating>
                     <View
                         style={{ flexDirection: "row", alignItems: "center" }}
                     >
