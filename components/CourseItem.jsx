@@ -10,6 +10,7 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
     const router = useRouter();
     const dataCourseSample = {
         author: "Sara Weise",
+        avatar: "https://images.pexels.com/photos/39866/entrepreneur-startup-start-up-man-39866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         work: "UI/UX Designer",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt officiis asperiores voluptates quisquam. Consequatur aut nulla quaerat velit explicabo unde saepe molestiae non nostrum exercitationem? Explicabo ex tempora voluptates! Laborum.",
         benefit: [
@@ -109,7 +110,7 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
                 borderColor: Colors.lightGray,
                 maxWidth: isHorizontal ? "100%" : 350,
                 marginRight: isHorizontal ? 0 : 40,
-                marginVertical: 40,
+                marginVertical: 30,
                 display: "flex",
                 flexDirection: isHorizontal ? "row" : "colum",
                 alignItems: "center",
@@ -197,7 +198,7 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
                         >
                             <Text style={{ color: Colors.primaryBlack }}>
                                 {numberOfLessons}
-                            </Text>{" "}
+                            </Text>
                             Lessons
                         </Text>
                     </View>
