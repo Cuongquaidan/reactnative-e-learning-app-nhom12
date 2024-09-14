@@ -29,6 +29,7 @@ const Home = () => {
             rating: 4.5,
             numberRating: 1233,
             numberOfLessons: 18,
+            slug: "UX-UI-foundation",
         },
         {
             id: 2,
@@ -39,6 +40,7 @@ const Home = () => {
             rating: 4.5,
             numberRating: 1233,
             numberOfLessons: 18,
+            slug: "UX-UI-foundation",
         },
         {
             id: 3,
@@ -49,6 +51,7 @@ const Home = () => {
             rating: 4.5,
             numberRating: 1233,
             numberOfLessons: 18,
+            slug: "UX-UI-foundation",
         },
     ];
     const dataTeacher = [

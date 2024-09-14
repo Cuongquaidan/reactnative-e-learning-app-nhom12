@@ -14,7 +14,6 @@ const HotTopic = ({ topic }) => {
                 borderRadius: 30,
                 alignSelf: "flex-start",
             }}
-            key={topic}
         >
             <Text
                 style={{
