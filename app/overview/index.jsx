@@ -1,5 +1,5 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import YoutubePlayer from "react-native-youtube-iframe";
@@ -7,15 +7,14 @@ import { Button, Tab, TabView } from "@rneui/themed";
 import Rating from "../../components/Rating";
 import { Colors } from "../../constants/Colors";
 import Overview from "../../components/course/Overview";
-
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Lessons from "../../components/course/Lessons";
 const CourseDetailsOverview = () => {
     const [indexTab, setIndexTab] = React.useState(0);
     let { courseDetails } = useLocalSearchParams();
     courseDetails = JSON.parse(courseDetails);
-
+    const [video, setVideo] = useState("zC0tnUyfol0");
     const navigation = useNavigation();
-
     useEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -54,6 +53,7 @@ const CourseDetailsOverview = () => {
                 </View>
             ),
         });
+        setVideo("zC0tnUyfol0");
     }, [navigation]);
 
     return (
@@ -61,11 +61,7 @@ const CourseDetailsOverview = () => {
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     {/* Video */}
-                    <YoutubePlayer
-                        height={350}
-                        play={false}
-                        videoId={"zC0tnUyfol0"}
-                    />
+                    <YoutubePlayer height={350} play={false} videoId={video} />
 
                     <View
                         style={{
@@ -160,29 +156,21 @@ const CourseDetailsOverview = () => {
                             </TabView.Item>
 
                             <TabView.Item style={{ width: "100%" }}>
-                                <ScrollView>
-                                    <Text
-                                        style={{
-                                            fontSize: 24,
-                                            fontWeight: "bold",
-                                        }}
-                                    >
-                                        Lessons
-                                    </Text>
-                                </ScrollView>
+                                <Lessons
+                                    data={courseDetails}
+                                    lessonOnPress={setVideo}
+                                ></Lessons>
                             </TabView.Item>
 
                             <TabView.Item style={{ width: "100%" }}>
-                                <ScrollView>
-                                    <Text
-                                        style={{
-                                            fontSize: 24,
-                                            fontWeight: "bold",
-                                        }}
-                                    >
-                                        Reviews
-                                    </Text>
-                                </ScrollView>
+                                <Text
+                                    style={{
+                                        fontSize: 24,
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Reviews
+                                </Text>
                             </TabView.Item>
                         </TabView>
                     </View>
