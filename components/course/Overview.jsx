@@ -44,102 +44,111 @@ const Overview = ({ course }) => {
         },
     ];
     return (
-        <View style={{ padding: 20 }}>
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}
-            >
+        <View>
+            <View style={{ padding: 20 }}>
                 <View
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 20,
-                    }}
-                >
-                    <View>
-                        <Avatar size={60} rounded source={{ uri: avatar }} />
-                    </View>
-                    <View>
-                        <Text style={{ fontSize: 20 }}>{author}</Text>
-                        <Text
-                            style={{ color: Colors.primaryGray, fontSize: 18 }}
-                        >
-                            {work}
-                        </Text>
-                    </View>
-                </View>
-                <Button title="Follow" color={Colors.primaryBlue} />
-            </View>
-            <View>
-                <View style={{ marginTop: 30 }}>
-                    <Heading title={"Description"}></Heading>
-                </View>
-                <Text
-                    style={{
-                        marginTop: 20,
-                        fontSize: 16,
-                        color: Colors.primaryGray,
-                    }}
-                    numberOfLines={showMore ? 100 : 2}
-                >
-                    {desc}
-                </Text>
-                {!showMore && (
-                    <Pressable
-                        onPress={() => setShowMore((showMore) => !showMore)}
-                    >
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: Colors.primaryBlue,
-                            }}
-                        >
-                            Show more
-                        </Text>
-                    </Pressable>
-                )}
-            </View>
-            <View style={{ marginTop: 30 }}>
-                <Heading title={"Benefits"}></Heading>
-                {benefit.map((item, index) => (
-                    <View key={index} style={{ padding: 5 }}>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                fontStyle: "italic",
-                                color: Colors.primaryPurple,
-                            }}
-                        >
-                            {item}
-                        </Text>
-                    </View>
-                ))}
-            </View>
-            <View
-                style={{
-                    marginTop: 40,
-                }}
-            >
-                <View
-                    style={{
-                        display: "flex",
                         flexDirection: "row",
                         justifyContent: "space-between",
                     }}
                 >
-                    <Heading title={"Courses that inspires"}></Heading>
-                    <ViewMore></ViewMore>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 20,
+                        }}
+                    >
+                        <View>
+                            <Avatar
+                                size={60}
+                                rounded
+                                source={{ uri: avatar }}
+                            />
+                        </View>
+                        <View>
+                            <Text style={{ fontSize: 20 }}>{author}</Text>
+                            <Text
+                                style={{
+                                    color: Colors.primaryGray,
+                                    fontSize: 18,
+                                }}
+                            >
+                                {work}
+                            </Text>
+                        </View>
+                    </View>
+                    <Button title="Follow" color={Colors.primaryBlue} />
                 </View>
+                <View>
+                    <View style={{ marginTop: 30 }}>
+                        <Heading title={"Description"}></Heading>
+                    </View>
+                    <Text
+                        style={{
+                            marginTop: 20,
+                            fontSize: 16,
+                            color: Colors.primaryGray,
+                        }}
+                        numberOfLines={showMore ? 100 : 2}
+                    >
+                        {desc}
+                    </Text>
+                    {!showMore && (
+                        <Pressable
+                            onPress={() => setShowMore((showMore) => !showMore)}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    color: Colors.primaryBlue,
+                                }}
+                            >
+                                Show more
+                            </Text>
+                        </Pressable>
+                    )}
+                </View>
+                <View style={{ marginTop: 30 }}>
+                    <Heading title={"Benefits"}></Heading>
+                    {benefit.map((item, index) => (
+                        <View key={index} style={{ padding: 5 }}>
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    fontStyle: "italic",
+                                    color: Colors.primaryPurple,
+                                }}
+                            >
+                                {item}
+                            </Text>
+                        </View>
+                    ))}
+                </View>
+                <View
+                    style={{
+                        marginTop: 40,
+                    }}
+                >
+                    <View
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Heading title={"Courses that inspires"}></Heading>
+                        <ViewMore></ViewMore>
+                    </View>
 
-                {popularCourses.slice(0, 3).map((item) => (
-                    <CourseItem
-                        key={item.id}
-                        course={item}
-                        isHorizontal={true}
-                    ></CourseItem>
-                ))}
+                    {popularCourses.slice(0, 3).map((item) => (
+                        <CourseItem
+                            key={item.id}
+                            course={item}
+                            isHorizontal={true}
+                        ></CourseItem>
+                    ))}
+                </View>
             </View>
         </View>
     );
