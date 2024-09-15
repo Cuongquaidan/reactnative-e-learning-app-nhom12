@@ -29,53 +29,53 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
         numberRating: 1880,
         source: [
             {
-                title: "Introduction",
+                title: "I - Introduction",
                 stt: 1,
                 lessons: [
                     {
                         name: "Amet adipisicing consectetur",
                         stt: 1,
-                        video: "https://www.youtube.com/watch?v=KVHimR1vf0o",
+                        video: "udpJ0v9VOz4",
                         duration: 90,
                     },
                     {
                         name: "Adipisicing dolor amet occaeca",
                         stt: 2,
-                        video: "https://www.youtube.com/watch?v=KVHimR1vf0o",
+                        video: "KVHimR1vf0o",
                         duration: 90,
                     },
                 ],
             },
             {
-                title: "Plan for your UX research",
+                title: "II - Plan for your UX research",
                 stt: 2,
                 lessons: [
                     {
                         name: "Exercitation elit incididunt esse",
                         stt: 1,
-                        video: "https://www.youtube.com/watch?v=KVHimR1vf0o",
+                        video: "Ak1lunhhxQM",
                         duration: 90,
                     },
                     {
                         name: "Duis esse ipsum laboru",
-                        video: "https://www.youtube.com/watch?v=KVHimR1vf0o",
+                        video: "I9XXCvvAc4A",
                         duration: 90,
                     },
                     {
                         name: "Labore minim reprehenderit pariaturea deserunta",
                         stt: 3,
-                        video: "https://www.youtube.com/watch?v=KVHimR1vf0o",
+                        video: "dctiUAs5i68",
                         duration: 90,
                     },
                 ],
             },
             {
-                title: "Conduct UX research",
+                title: "III - Conduct UX research",
                 stt: 3,
                 lessons: [],
             },
             {
-                title: "Articulate findings",
+                title: "IV - Articulate findings",
                 stt: 4,
                 lessons: [],
             },
