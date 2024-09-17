@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView, Dimensions } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -9,12 +9,16 @@ import { Colors } from "../../constants/Colors";
 import Overview from "../../components/course/Overview";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Lessons from "../../components/course/Lessons";
+
 const CourseDetailsOverview = () => {
-    const [indexTab, setIndexTab] = React.useState(0);
+    const [indexTab, setIndexTab] = useState(0);
+    const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
+    const [contentHeight, setContentHeight] = useState(0);
     let { courseDetails } = useLocalSearchParams();
     courseDetails = JSON.parse(courseDetails);
     const [video, setVideo] = useState("zC0tnUyfol0");
     const navigation = useNavigation();
+
     useEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -55,6 +59,18 @@ const CourseDetailsOverview = () => {
         });
         setVideo("zC0tnUyfol0");
     }, [navigation]);
+
+    const onTabLayout = (event, tabIndex) => {
+        const { height } = event.nativeEvent.layout;
+        const updatedHeights = [...tabHeights];
+        updatedHeights[tabIndex] = height;
+        setTabHeights(updatedHeights);
+        setContentHeight(updatedHeights[indexTab]); // Cập nhật chiều cao hiện tại
+    };
+
+    useEffect(() => {
+        setContentHeight(tabHeights[indexTab]); // Khi tab thay đổi, cập nhật chiều cao tương ứng
+    }, [indexTab, tabHeights]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -105,72 +121,85 @@ const CourseDetailsOverview = () => {
                     </View>
 
                     {/* Tabs */}
-                    <Tab
-                        value={indexTab}
-                        onChange={(e) => setIndexTab(e)}
-                        indicatorStyle={{
-                            backgroundColor: Colors.primaryBlue,
-                            height: 3,
-                        }}
-                    >
-                        <Tab.Item
-                            title="OVERVIEW"
-                            titleStyle={{
-                                fontSize: 20,
-                                color:
-                                    indexTab === 0
-                                        ? Colors.primaryBlue
-                                        : Colors.primaryGray,
+                    <View style={{ flex: 1 }}>
+                        <Tab
+                            value={indexTab}
+                            onChange={(e) => setIndexTab(e)}
+                            indicatorStyle={{
+                                backgroundColor: Colors.primaryBlue,
+                                height: 3,
                             }}
-                        />
-                        <Tab.Item
-                            title="LESSONS"
-                            titleStyle={{
-                                fontSize: 20,
-                                color:
-                                    indexTab === 1
-                                        ? Colors.primaryBlue
-                                        : Colors.primaryGray,
-                            }}
-                        />
-                        <Tab.Item
-                            title="REVIEW"
-                            titleStyle={{
-                                fontSize: 20,
-                                color:
-                                    indexTab === 2
-                                        ? Colors.primaryBlue
-                                        : Colors.primaryGray,
-                            }}
-                        />
-                    </Tab>
+                        >
+                            <Tab.Item
+                                title="OVERVIEW"
+                                titleStyle={{
+                                    fontSize: 20,
+                                    color:
+                                        indexTab === 0
+                                            ? Colors.primaryBlue
+                                            : Colors.primaryGray,
+                                }}
+                            />
+                            <Tab.Item
+                                title="LESSONS"
+                                titleStyle={{
+                                    fontSize: 20,
+                                    color:
+                                        indexTab === 1
+                                            ? Colors.primaryBlue
+                                            : Colors.primaryGray,
+                                }}
+                            />
+                            <Tab.Item
+                                title="REVIEW"
+                                titleStyle={{
+                                    fontSize: 20,
+                                    color:
+                                        indexTab === 2
+                                            ? Colors.primaryBlue
+                                            : Colors.primaryGray,
+                                }}
+                            />
+                        </Tab>
 
-                    <View style={{ minHeight: 1800 }}>
                         <TabView
                             value={indexTab}
                             onChange={setIndexTab}
                             animationType="spring"
+                            containerStyle={{ height: contentHeight || 500 }} // Cập nhật chiều cao động
                         >
                             <TabView.Item style={{ width: "100%" }}>
-                                <Overview course={courseDetails} />
-                            </TabView.Item>
-
-                            <TabView.Item style={{ width: "100%" }}>
-                                <Lessons
-                                    data={courseDetails}
-                                    lessonOnPress={setVideo}
-                                ></Lessons>
-                            </TabView.Item>
-
-                            <TabView.Item style={{ width: "100%" }}>
-                                <Text
-                                    style={{
-                                        fontSize: 24,
-                                        fontWeight: "bold",
-                                    }}
+                                <View
+                                    onLayout={(event) => onTabLayout(event, 0)}
                                 >
-                                    Reviews
-                                </Text>
+                                    <Overview course={courseDetails} />
+                                </View>
+                            </TabView.Item>
+
+                            <TabView.Item style={{ width: "100%" }}>
+                                <View
+                                    onLayout={(event) => onTabLayout(event, 1)}
+                                >
+                                    <Lessons
+                                        data={courseDetails}
+                                        lessonOnPress={setVideo}
+                                    />
+                                </View>
+                            </TabView.Item>
+
+                            <TabView.Item style={{ width: "100%" }}>
+                                <View
+                                    onLayout={(event) => onTabLayout(event, 2)}
+                                >
+                                    <Text
+                                        style={{
+                                            fontSize: 24,
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Reviews
+                                    </Text>
+                                </View>
                             </TabView.Item>
                         </TabView>
                     </View>
