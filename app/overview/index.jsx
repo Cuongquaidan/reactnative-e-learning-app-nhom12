@@ -9,6 +9,8 @@ import { Colors } from "../../constants/Colors";
 import Overview from "../../components/course/Overview";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Lessons from "../../components/course/Lessons";
+import LevelRating from "../../components/LevelRating";
+import Reviews from "../../components/course/Reviews";
 
 const CourseDetailsOverview = () => {
     const [indexTab, setIndexTab] = useState(0);
@@ -129,6 +131,10 @@ const CourseDetailsOverview = () => {
                                 backgroundColor: Colors.primaryBlue,
                                 height: 3,
                             }}
+                            style={{
+                                borderBottomColor: Colors.lightGray,
+                                borderBottomWidth: 1,
+                            }}
                         >
                             <Tab.Item
                                 title="OVERVIEW"
@@ -191,14 +197,7 @@ const CourseDetailsOverview = () => {
                                 <View
                                     onLayout={(event) => onTabLayout(event, 2)}
                                 >
-                                    <Text
-                                        style={{
-                                            fontSize: 24,
-                                            fontWeight: "bold",
-                                        }}
-                                    >
-                                        Reviews
-                                    </Text>
+                                    <Reviews></Reviews>
                                 </View>
                             </TabView.Item>
                         </TabView>
