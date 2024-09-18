@@ -1,6 +1,6 @@
 import { View, Text, Pressable, ScrollView, Dimensions } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { Button, Tab, TabView } from "@rneui/themed";
@@ -11,16 +11,16 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Lessons from "../../components/course/Lessons";
 import LevelRating from "../../components/LevelRating";
 import Reviews from "../../components/course/Reviews";
-
-const CourseDetailsOverview = () => {
+import Projects from "../../components/course/Projects";
+const CourseDetails = () => {
+    let { courseDetails } = useLocalSearchParams();
+    courseDetails = JSON.parse(courseDetails);
+    const navigation = useNavigation();
+    const router = useRouter();
+    const [video, setVideo] = useState("zC0tnUyfol0");
     const [indexTab, setIndexTab] = useState(0);
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
-    let { courseDetails } = useLocalSearchParams();
-    courseDetails = JSON.parse(courseDetails);
-    const [video, setVideo] = useState("zC0tnUyfol0");
-    const navigation = useNavigation();
-
     useEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -41,8 +41,9 @@ const CourseDetailsOverview = () => {
                             textAlign: "center",
                             paddingRight: 100,
                         }}
+                        numberOfLines={1}
                     >
-                        Course details
+                        {courseDetails.courseName}
                     </Text>
                     <Pressable
                         style={{
@@ -61,7 +62,6 @@ const CourseDetailsOverview = () => {
         });
         setVideo("zC0tnUyfol0");
     }, [navigation]);
-
     const onTabLayout = (event, tabIndex) => {
         const { height } = event.nativeEvent.layout;
         const updatedHeights = [...tabHeights];
@@ -87,15 +87,27 @@ const CourseDetailsOverview = () => {
                         }}
                     >
                         <View>
-                            <Text
-                                style={{
-                                    fontSize: 26,
-                                    fontWeight: "700",
-                                    color: "#000",
+                            <Pressable
+                                onPress={() => {
+                                    router.push({
+                                        pathname: `/course-details/${courseDetails.slug}`,
+                                        params: {
+                                            courseDetails:
+                                                JSON.stringify(courseDetails),
+                                        },
+                                    });
                                 }}
                             >
-                                {courseDetails.courseName}
-                            </Text>
+                                <Text
+                                    style={{
+                                        fontSize: 26,
+                                        fontWeight: "700",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {courseDetails.courseName}
+                                </Text>
+                            </Pressable>
                             <View
                                 style={{
                                     marginTop: 20,
@@ -137,7 +149,7 @@ const CourseDetailsOverview = () => {
                             }}
                         >
                             <Tab.Item
-                                title="OVERVIEW"
+                                title="LESSONS"
                                 titleStyle={{
                                     fontSize: 20,
                                     color:
@@ -147,7 +159,7 @@ const CourseDetailsOverview = () => {
                                 }}
                             />
                             <Tab.Item
-                                title="LESSONS"
+                                title="PROJECTS"
                                 titleStyle={{
                                     fontSize: 20,
                                     color:
@@ -157,7 +169,7 @@ const CourseDetailsOverview = () => {
                                 }}
                             />
                             <Tab.Item
-                                title="REVIEW"
+                                title="Q&A"
                                 titleStyle={{
                                     fontSize: 20,
                                     color:
@@ -178,7 +190,10 @@ const CourseDetailsOverview = () => {
                                 <View
                                     onLayout={(event) => onTabLayout(event, 0)}
                                 >
-                                    <Overview course={courseDetails} />
+                                    <Lessons
+                                        data={courseDetails}
+                                        lessonOnPress={setVideo}
+                                    />
                                 </View>
                             </TabView.Item>
 
@@ -186,10 +201,7 @@ const CourseDetailsOverview = () => {
                                 <View
                                     onLayout={(event) => onTabLayout(event, 1)}
                                 >
-                                    <Lessons
-                                        data={courseDetails}
-                                        lessonOnPress={setVideo}
-                                    />
+                                    <Projects></Projects>
                                 </View>
                             </TabView.Item>
 
@@ -277,4 +289,4 @@ const CourseDetailsOverview = () => {
     );
 };
 
-export default CourseDetailsOverview;
+export default CourseDetails;
