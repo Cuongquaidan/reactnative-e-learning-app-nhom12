@@ -85,8 +85,10 @@ const ChapterDropdown = ({
                                 flexDirection: "row",
                                 alignItems: "center",
                                 gap: 20,
-                                paddingHorizontal: 20,
-                                paddingVertical: 10,
+                                paddingHorizontal:
+                                    item.video === lessonActive ? 18 : 20,
+                                paddingVertical:
+                                    item.video === lessonActive ? 8 : 10,
                                 borderRadius: 5,
                                 borderWidth:
                                     item.video === lessonActive ? 1 : 0,
