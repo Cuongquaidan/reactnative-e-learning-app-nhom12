@@ -12,6 +12,7 @@ import Lessons from "../../components/course/Lessons";
 import LevelRating from "../../components/LevelRating";
 import Reviews from "../../components/course/Reviews";
 import Projects from "../../components/course/Projects";
+import QAndA from "../../components/course/QAndA";
 const CourseDetails = () => {
     let { courseDetails } = useLocalSearchParams();
     courseDetails = JSON.parse(courseDetails);
@@ -209,82 +210,13 @@ const CourseDetails = () => {
                                 <View
                                     onLayout={(event) => onTabLayout(event, 2)}
                                 >
-                                    <Reviews></Reviews>
+                                    <QAndA></QAndA>
                                 </View>
                             </TabView.Item>
                         </TabView>
                     </View>
                 </View>
             </ScrollView>
-            <View
-                style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    borderTopColor: Colors.lightGray,
-                    borderTopWidth: 2,
-                    borderStyle: "solid",
-                    padding: 20,
-                }}
-            >
-                <View>
-                    <Text
-                        style={{
-                            fontSize: 28,
-                            fontWeight: 900,
-                            color: Colors.primaryBlue,
-                        }}
-                    >
-                        {(
-                            (courseDetails.price *
-                                (100 - courseDetails.discount)) /
-                            100
-                        ).toFixed(2)}{" "}
-                        $
-                    </Text>
-                    <View style={{ flexDirection: "row", gap: 10 }}>
-                        <Text
-                            style={{
-                                textDecorationLine: "line-through",
-                                color: Colors.primaryGray,
-                                fontSize: 16,
-                            }}
-                        >
-                            {courseDetails.price}$
-                        </Text>
-                        <Text
-                            style={{ color: Colors.primaryGray, fontSize: 16 }}
-                        >
-                            discount: {courseDetails.discount} %
-                        </Text>
-                    </View>
-                </View>
-                <View>
-                    <Button
-                        title={
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    gap: 10,
-                                }}
-                            >
-                                <AntDesign
-                                    name="shoppingcart"
-                                    size={24}
-                                    color="white"
-                                />
-                                <Text style={{ fontSize: 20, color: "white" }}>
-                                    Add to cart
-                                </Text>
-                            </View>
-                        }
-                        color={Colors.primaryBlue}
-                        radius={5}
-                        size="lg"
-                    />
-                </View>
-            </View>
         </View>
     );
 };
