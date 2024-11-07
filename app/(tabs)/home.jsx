@@ -84,7 +84,7 @@ const Home = () => {
         },
     ];
     return (
-        <ScrollView>
+        <View>
             <View
                 style={{
                     display: "flex",
@@ -358,7 +358,7 @@ const Home = () => {
                     />
                 </View>
             </View>
-        </ScrollView>
+        </View>
     );
 };
 
