@@ -2,9 +2,10 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Colors } from "../constants/Colors";
 
-const HotTopic = ({ topic }) => {
+const HotTopic = ({ topic, ...props }) => {
     return (
         <View
+            {...props}
             style={{
                 paddingHorizontal: 20,
                 paddingVertical: 10,

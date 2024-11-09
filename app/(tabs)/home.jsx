@@ -23,6 +23,7 @@ const Home = () => {
         {
             id: 1,
             title: "PHP in One Click",
+            category: "Code",
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
             image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             price: 59,
@@ -34,6 +35,7 @@ const Home = () => {
         {
             id: 2,
             title: "PHP in One Click",
+            category: "Code",
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
             image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             price: 59,
@@ -45,6 +47,7 @@ const Home = () => {
         {
             id: 3,
             title: "PHP in One Click",
+            category: "Code",
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
             image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             price: 59,
@@ -84,7 +87,7 @@ const Home = () => {
         },
     ];
     return (
-        <View>
+        <ScrollView>
             <View
                 style={{
                     display: "flex",
@@ -358,7 +361,7 @@ const Home = () => {
                     />
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
