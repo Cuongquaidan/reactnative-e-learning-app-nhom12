@@ -6,7 +6,7 @@ import {
     Pressable,
     TextInput,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Heading from "../../components/Heading";
 import ViewMore from "../../components/ViewMore";
 import CourseItem from "../../components/CourseItem";
@@ -18,11 +18,14 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import { router } from "expo-router";
 const Search = () => {
+    const [searchKey, setSearchKey] = useState("");
     const popularCourses = [
         {
             id: 1,
             title: "PHP in One Click",
+            category: "Code",
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
             image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             price: 59,
@@ -33,6 +36,7 @@ const Search = () => {
         {
             id: 2,
             title: "PHP in One Click",
+            category: "Code",
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
             image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             price: 59,
@@ -43,6 +47,7 @@ const Search = () => {
         {
             id: 3,
             title: "PHP in One Click",
+            category: "Code",
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
             image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             price: 59,
@@ -99,10 +104,13 @@ const Search = () => {
                             fontSize: 16,
                             borderRadius: 8,
                         }}
+                        value={searchKey}
+                        onChangeText={(value) => setSearchKey(value)}
                         placeholder="Search course"
                     ></TextInput>
                 </View>
                 <Pressable
+                    onPress={() => router.push(`/search-page/${searchKey}`)}
                     style={{
                         backgroundColor: Colors.primaryBlue,
                         padding: 16,
@@ -141,8 +149,14 @@ const Search = () => {
                         marginTop: 30,
                     }}
                 >
-                    {hotTopics.map((item) => (
-                        <HotTopic topic={item}></HotTopic>
+                    {hotTopics.map((item, index) => (
+                        <HotTopic
+                            onPress={() => {
+                                router.push(`search-page/${item}`);
+                            }}
+                            topic={item}
+                            key={index}
+                        ></HotTopic>
                     ))}
                 </View>
             </View>

@@ -6,9 +6,11 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
-const CategoryItemFullRow = ({ icon, name }) => {
+import { router } from "expo-router";
+const CategoryItemFullRow = ({ icon, name, ...props }) => {
     return (
         <Pressable
+            {...props}
             style={{
                 flex: 1,
                 borderWidth: 1,
@@ -18,9 +20,10 @@ const CategoryItemFullRow = ({ icon, name }) => {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-
+                cursor: "pointer",
                 justifyContent: "space-between",
             }}
+            onPress={() => router.push(`search-page/${name}`)}
         >
             <View
                 style={{
