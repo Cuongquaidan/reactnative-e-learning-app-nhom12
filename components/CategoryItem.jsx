@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Colors } from "../constants/Colors";
+import { router } from "expo-router";
 
 const CategoryItem = ({ icon, bgColor, name }) => {
     return (
-        <View
+        <Pressable
             style={{
                 flex: 1,
                 borderWidth: 1,
@@ -15,6 +16,7 @@ const CategoryItem = ({ icon, bgColor, name }) => {
                 flexDirection: "row",
                 alignItems: "center",
             }}
+            onPress={() => router.push(`search-page/${name}`)}
         >
             <View
                 style={{
@@ -34,7 +36,7 @@ const CategoryItem = ({ icon, bgColor, name }) => {
             >
                 {name}
             </Text>
-        </View>
+        </Pressable>
     );
 };
 

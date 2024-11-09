@@ -1,10 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Colors } from "../constants/Colors";
 
 const HotTopic = ({ topic, ...props }) => {
     return (
-        <View
+        <Pressable
             {...props}
             style={{
                 paddingHorizontal: 20,
@@ -23,7 +23,7 @@ const HotTopic = ({ topic, ...props }) => {
             >
                 {topic}
             </Text>
-        </View>
+        </Pressable>
     );
 };
 

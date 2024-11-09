@@ -150,7 +150,13 @@ const Search = () => {
                     }}
                 >
                     {hotTopics.map((item, index) => (
-                        <HotTopic topic={item} key={index}></HotTopic>
+                        <HotTopic
+                            onPress={() => {
+                                router.push(`search-page/${item}`);
+                            }}
+                            topic={item}
+                            key={index}
+                        ></HotTopic>
                     ))}
                 </View>
             </View>
