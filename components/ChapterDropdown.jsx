@@ -40,7 +40,7 @@ const ChapterDropdown = ({
         const contentHeight = data.lessons.length * 80;
         Animated.timing(heightAnim, {
             toValue: shown ? contentHeight : 0,
-            duration: 300,
+            duration: 50,
             useNativeDriver: false,
         }).start();
     }, [shown, data.lessons]);

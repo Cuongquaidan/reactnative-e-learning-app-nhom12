@@ -12,6 +12,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import CourseItem from "../../components/CourseItem";
 import TeacherItem from "../../components/TeacherItem";
+import { router } from "expo-router";
 const Home = () => {
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
@@ -158,7 +159,7 @@ const Home = () => {
                         }}
                     >
                         <Heading title={"Categories"}></Heading>
-                        <ViewMore></ViewMore>
+                        <View></View>
                     </View>
                     <View
                         style={{
@@ -271,7 +272,11 @@ const Home = () => {
                         }}
                     >
                         <Heading title={"Popular courses"}></Heading>
-                        <ViewMore></ViewMore>
+                        <ViewMore
+                            handleOnPress={() =>
+                                router.push(`all-course/popular`)
+                            }
+                        ></ViewMore>
                     </View>
                     <FlatList
                         data={popularCourses}
@@ -296,7 +301,11 @@ const Home = () => {
                         }}
                     >
                         <Heading title={"Recommended for you"}></Heading>
-                        <ViewMore></ViewMore>
+                        <ViewMore
+                            handleOnPress={() =>
+                                router.push(`all-course/recommended`)
+                            }
+                        ></ViewMore>
                     </View>
                     <FlatList
                         data={popularCourses}
@@ -321,7 +330,11 @@ const Home = () => {
                         }}
                     >
                         <Heading title={"Courses that inspires"}></Heading>
-                        <ViewMore></ViewMore>
+                        <ViewMore
+                            handleOnPress={() =>
+                                router.push(`all-course/inspires`)
+                            }
+                        ></ViewMore>
                     </View>
                     {/* <FlatList
                         data={popularCourses}
