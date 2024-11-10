@@ -6,7 +6,7 @@ import {
     Pressable,
     TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../../components/Heading";
 import ViewMore from "../../components/ViewMore";
 import CourseItem from "../../components/CourseItem";
@@ -21,41 +21,8 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import { router } from "expo-router";
 const Search = () => {
     const [searchKey, setSearchKey] = useState("");
-    const popularCourses = [
-        {
-            id: 1,
-            title: "PHP in One Click",
-            category: "Code",
-            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
-            image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            price: 59,
-            rating: 4.5,
-            numberRating: 1233,
-            numberOfLessons: 18,
-        },
-        {
-            id: 2,
-            title: "PHP in One Click",
-            category: "Code",
-            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
-            image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            price: 59,
-            rating: 4.5,
-            numberRating: 1233,
-            numberOfLessons: 18,
-        },
-        {
-            id: 3,
-            title: "PHP in One Click",
-            category: "Code",
-            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
-            image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            price: 59,
-            rating: 4.5,
-            numberRating: 1233,
-            numberOfLessons: 18,
-        },
-    ];
+
+    const [dataCourses, setDataCourses] = useState(null);
     const hotTopics = [
         "Java",
         "SQL",
@@ -65,6 +32,17 @@ const Search = () => {
         "Photoshop",
         "Watercolor",
     ];
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                "https://673061bf66e42ceaf1601f49.mockapi.io/courses"
+            );
+            if (!response) throw new Error("Fetch courses failed");
+            const resjson = await response.json();
+            setDataCourses(resjson);
+        };
+        fetchData();
+    }, []);
     return (
         <ScrollView
             style={{
@@ -246,10 +224,12 @@ const Search = () => {
                     }}
                 >
                     <Heading title={"Recommended for you"}></Heading>
-                    <ViewMore></ViewMore>
+                    <ViewMore
+                        handleOnPress={() => router.push(`all-course/popular`)}
+                    ></ViewMore>
                 </View>
                 <FlatList
-                    data={popularCourses}
+                    data={dataCourses?.slice(0, 3)}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <CourseItem course={item}></CourseItem>
