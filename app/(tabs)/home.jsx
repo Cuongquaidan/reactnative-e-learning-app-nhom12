@@ -66,6 +66,8 @@ const Home = () => {
             desc: "IUH University",
             address: "HCM city",
             image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            background:
+                "https://images.pexels.com/photos/302743/pexels-photo-302743.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             rating: 4.5,
             numberRating: 1999,
         },
@@ -74,7 +76,9 @@ const Home = () => {
             name: "Messi",
             desc: "IUH University",
             address: "HCM city",
-            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            image: "https://images.pexels.com/photos/1097456/pexels-photo-1097456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            background:
+                "https://images.pexels.com/photos/445109/pexels-photo-445109.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             rating: 4.5,
             numberRating: 1999,
         },
@@ -83,7 +87,20 @@ const Home = () => {
             name: "Ronaldo",
             desc: "IUH University",
             address: "HCM city",
-            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            image: "https://images.pexels.com/photos/39866/entrepreneur-startup-start-up-man-39866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            background:
+                "https://images.pexels.com/photos/240561/pexels-photo-240561.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            rating: 4.5,
+            numberRating: 1999,
+        },
+        {
+            id: 4,
+            name: "Ronaldinho",
+            desc: "IUH University",
+            address: "HCM city",
+            image: "https://images.pexels.com/photos/845457/pexels-photo-845457.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            background:
+                "https://images.pexels.com/photos/1087735/pexels-photo-1087735.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             rating: 4.5,
             numberRating: 1999,
         },

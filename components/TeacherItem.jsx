@@ -1,15 +1,16 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "../constants/Colors";
+import { router } from "expo-router";
 
 const TeacherItem = ({ teacherInfo, isHorizontal = false }) => {
     const { id, name, desc, address, image, rating, numberRating } =
         teacherInfo;
 
     return (
-        <View
+        <Pressable
             key={id}
             style={{
                 padding: 20,
@@ -24,6 +25,14 @@ const TeacherItem = ({ teacherInfo, isHorizontal = false }) => {
                 alignItems: "flex-start",
                 gap: isHorizontal ? 20 : 0,
             }}
+            onPress={() =>
+                router.push({
+                    pathname: `/teacher-info/${id}`,
+                    params: {
+                        teacherInfo: JSON.stringify(teacherInfo),
+                    },
+                })
+            }
         >
             <Image
                 source={{ uri: image }}
@@ -108,7 +117,7 @@ const TeacherItem = ({ teacherInfo, isHorizontal = false }) => {
                     </Text>
                 </View>
             </View>
-        </View>
+        </Pressable>
     );
 };
 
