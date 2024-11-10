@@ -15,6 +15,7 @@ import TeacherItem from "../../components/TeacherItem";
 import { router } from "expo-router";
 const Home = () => {
     const [dataCourses, setDataCourses] = useState(null);
+    const [dataTeacher, setDataTeacher] = useState(null);
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
         percentSales: 20,
@@ -59,53 +60,9 @@ const Home = () => {
     //         slug: "UX-UI-foundation",
     //     },
     // ];
-    const dataTeacher = [
-        {
-            id: 1,
-            name: "Robert Lewandosky",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            background:
-                "https://images.pexels.com/photos/302743/pexels-photo-302743.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-        {
-            id: 2,
-            name: "Messi",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/1097456/pexels-photo-1097456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            background:
-                "https://images.pexels.com/photos/445109/pexels-photo-445109.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-        {
-            id: 3,
-            name: "Ronaldo",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/39866/entrepreneur-startup-start-up-man-39866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            background:
-                "https://images.pexels.com/photos/240561/pexels-photo-240561.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-        {
-            id: 4,
-            name: "Ronaldinho",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/845457/pexels-photo-845457.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            background:
-                "https://images.pexels.com/photos/1087735/pexels-photo-1087735.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-    ];
+
     useEffect(() => {
+        //
         const fetchData = async () => {
             const response = await fetch(
                 "https://673061bf66e42ceaf1601f49.mockapi.io/courses"
@@ -115,6 +72,15 @@ const Home = () => {
             setDataCourses(resjson);
         };
         fetchData();
+        const fetchData1 = async () => {
+            const response = await fetch(
+                "https://673061bf66e42ceaf1601f49.mockapi.io/teachers"
+            );
+            if (!response) throw new Error("Fetch teachers failed");
+            const resjson = await response.json();
+            setDataTeacher(resjson);
+        };
+        fetchData1();
     }, []);
     return (
         <ScrollView>
