@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
+
 const TabsLayout = () => {
     return (
         <Tabs
