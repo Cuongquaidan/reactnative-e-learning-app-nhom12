@@ -11,8 +11,10 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Lessons from "../../components/course/Lessons";
 import LevelRating from "../../components/LevelRating";
 import Reviews from "../../components/course/Reviews";
+import { useCartItems } from "../../context/CartContext";
 
 const CourseDetailsOverview = () => {
+    const { cartItems, setCartItems } = useCartItems();
     const [indexTab, setIndexTab] = useState(0);
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
@@ -282,6 +284,12 @@ const CourseDetailsOverview = () => {
                         color={Colors.primaryBlue}
                         radius={5}
                         size="lg"
+                        onPress={() => {
+                            setCartItems((prev) => {
+                                const updatedCart = [...prev, courseDetails];
+                                return updatedCart;
+                            });
+                        }}
                     />
                 </View>
             </View>

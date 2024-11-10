@@ -1,5 +1,12 @@
-import { View, Text, ScrollView, Pressable, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+    View,
+    Text,
+    ScrollView,
+    Pressable,
+    FlatList,
+    Image,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../constants/Colors";
 import BannerSales from "../../components/BannerSales";
@@ -13,8 +20,14 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import CourseItem from "../../components/CourseItem";
 import TeacherItem from "../../components/TeacherItem";
 import { router } from "expo-router";
+import { useCartItems } from "../../context/CartContext";
+
 const Home = () => {
+    const [showCart, setShowCart] = useState(false);
     const [dataCourses, setDataCourses] = useState(null);
+    const { cartItems, setCartItems } = useCartItems();
+    console.log(cartItems);
+    const [dataTeacher, setDataTeacher] = useState(null);
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
         percentSales: 20,
@@ -59,36 +72,9 @@ const Home = () => {
     //         slug: "UX-UI-foundation",
     //     },
     // ];
-    const dataTeacher = [
-        {
-            id: 1,
-            name: "Robert Lewandosky",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-        {
-            id: 2,
-            name: "Messi",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-        {
-            id: 3,
-            name: "Ronaldo",
-            desc: "IUH University",
-            address: "HCM city",
-            image: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            rating: 4.5,
-            numberRating: 1999,
-        },
-    ];
+
     useEffect(() => {
+        //
         const fetchData = async () => {
             const response = await fetch(
                 "https://673061bf66e42ceaf1601f49.mockapi.io/courses"
@@ -98,6 +84,15 @@ const Home = () => {
             setDataCourses(resjson);
         };
         fetchData();
+        const fetchData1 = async () => {
+            const response = await fetch(
+                "https://673061bf66e42ceaf1601f49.mockapi.io/teachers"
+            );
+            if (!response) throw new Error("Fetch teachers failed");
+            const resjson = await response.json();
+            setDataTeacher(resjson);
+        };
+        fetchData1();
     }, []);
     return (
         <ScrollView>
@@ -109,6 +104,7 @@ const Home = () => {
                     paddingVertical: 40,
                     paddingHorizontal: 30,
                     backgroundColor: Colors.primaryBlue,
+                    position: "relative",
                 }}
             >
                 <View>
@@ -138,13 +134,14 @@ const Home = () => {
                         gap: 30,
                     }}
                 >
-                    <Pressable>
+                    <Pressable onPress={() => setShowCart((prev) => !prev)}>
                         <Ionicons
                             name="cart-outline"
                             size={30}
                             color={Colors.primaryWhite}
                         />
                     </Pressable>
+
                     <Pressable>
                         <Ionicons
                             name="notifications-outline"
@@ -154,6 +151,7 @@ const Home = () => {
                     </Pressable>
                 </View>
             </View>
+
             <BannerSales saleOffer={saleOffer}></BannerSales>
             {/* Categories */}
 
@@ -386,6 +384,71 @@ const Home = () => {
                     />
                 </View>
             </View>
+            {showCart ? (
+                <View
+                    style={{
+                        gap: 10,
+                        backgroundColor: "white",
+                        padding: 10,
+                        position: "absolute",
+                        width: 500,
+                        left: 20,
+                        top: 80,
+                        borderWidth: 2,
+                        borderRadius: 5,
+                    }}
+                >
+                    {cartItems?.map((item, index) => (
+                        <View
+                            key={index}
+                            style={{
+                                flexDirection: "row",
+                                gap: 20,
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: Colors.lightGray,
+                                borderRadius: 5,
+                            }}
+                        >
+                            <View>
+                                <Image
+                                    source={{ uri: item.avatar }}
+                                    style={{ width: 40, height: 40 }}
+                                ></Image>
+                            </View>
+                            <View>
+                                <Text style={{}}>{item?.courseName}</Text>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        gap: 10,
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            textDecorationLine: "line-through",
+                                            color: Colors.primaryGray,
+                                            fontSize: 16,
+                                        }}
+                                    >
+                                        {item.price}$
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            color: Colors.primaryGray,
+                                            fontSize: 16,
+                                        }}
+                                    >
+                                        discount: {item.discount} %
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+            ) : (
+                <View></View>
+            )}
         </ScrollView>
     );
 };

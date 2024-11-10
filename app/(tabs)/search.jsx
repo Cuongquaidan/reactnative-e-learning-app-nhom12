@@ -225,7 +225,9 @@ const Search = () => {
                 >
                     <Heading title={"Recommended for you"}></Heading>
                     <ViewMore
-                        handleOnPress={() => router.push(`all-course/popular`)}
+                        handleOnPress={() =>
+                            router.push(`all-course/remembered`)
+                        }
                     ></ViewMore>
                 </View>
                 <FlatList
