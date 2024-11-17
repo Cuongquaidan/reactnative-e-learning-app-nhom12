@@ -8,13 +8,17 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Colors } from "../constants/Colors";
-
+import Constants from "expo-constants";
+import { useRouter } from "expo-router";
+import { useAuthContext } from "../context/AuthContext";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const { setName, setEmail: setEmailAuth } = useAuthContext();
+    const router = useRouter();
     // Hàm xử lý khi nhấn Submit
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (!email || !password) {
             Alert.alert("Error", "Both email and password are required.");
             return;
@@ -25,8 +29,38 @@ const Login = () => {
             Alert.alert("Error", "Please enter a valid email address.");
             return;
         }
-        // Thông báo đăng nhập thành công
-        Alert.alert("Success", `Welcome back, ${email}!`);
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/accounts/login`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                Alert.alert("Error", "Something went wrong");
+                return;
+            }
+            const data = await response.json();
+            Alert.alert("", data.message);
+            setEmailAuth(data.email);
+            setName(data.name);
+            setPassword("");
+
+            setEmail("");
+            // Thông báo đăng nhập thành công
+            Alert.alert("", data.message);
+            router.push("/home");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

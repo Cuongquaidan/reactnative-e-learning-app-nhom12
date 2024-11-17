@@ -8,17 +8,17 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Colors } from "../constants/Colors";
-
+import Constants from "expo-constants";
 const Register = () => {
     // Khởi tạo state cho từng ô input
-    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     // Hàm xử lý khi nhấn Submit
-    const handleSubmit = () => {
-        if (!name || !email || !password || !confirmPassword) {
+    const handleSubmit = async () => {
+        if (!username || !email || !password || !confirmPassword) {
             Alert.alert("Error", "All fields are required.");
             return;
         }
@@ -26,7 +26,36 @@ const Register = () => {
             Alert.alert("Error", "Passwords do not match.");
             return;
         }
-        Alert.alert("Success", `Welcome, ${name}!`);
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/accounts/register`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                Alert.alert("Error", "Something went wrong");
+                return;
+            }
+            const data = await response.json();
+            Alert.alert("", data.message);
+            setConfirmPassword("");
+            setPassword("");
+            setUsername("");
+            setEmail("");
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -66,8 +95,8 @@ const Register = () => {
                     </Text>
                     <TextInput
                         placeholder="Enter your name"
-                        value={name}
-                        onChangeText={setName} // Cập nhật state name
+                        value={username}
+                        onChangeText={setUsername} // Cập nhật state name
                         style={{
                             borderWidth: 1,
                             padding: 10,
