@@ -21,12 +21,14 @@ import CourseItem from "../../components/CourseItem";
 import TeacherItem from "../../components/TeacherItem";
 import { router } from "expo-router";
 import { useCartItems } from "../../context/CartContext";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Home = () => {
+    const { name, email } = useAuthContext();
     const [showCart, setShowCart] = useState(false);
     const [dataCourses, setDataCourses] = useState(null);
     const { cartItems, setCartItems } = useCartItems();
-    console.log(cartItems);
+    console.log(name, email);
     const [dataTeacher, setDataTeacher] = useState(null);
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
@@ -115,7 +117,7 @@ const Home = () => {
                             fontWeight: 700,
                         }}
                     >
-                        Hello, Roise
+                        Hello, {name}
                     </Text>
                     <Text
                         style={{
