@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import { Stack } from "expo-router";
 import React from "react";
 import { CartProvider } from "../context/CartContext";
+import ChatbotComponent from "../components/ChatbotComponent";
 const RootLayout = () => {
     return (
         <CartProvider>
@@ -14,6 +15,7 @@ const RootLayout = () => {
                     }}
                 ></Stack.Screen>
             </Stack>
+           <ChatbotComponent/>
         </CartProvider>
     );
 };
