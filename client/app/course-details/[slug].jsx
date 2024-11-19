@@ -14,11 +14,11 @@ import Reviews from "../../components/course/Reviews";
 import Projects from "../../components/course/Projects";
 import QAndA from "../../components/course/QAndA";
 const CourseDetails = () => {
-    let { courseDetails } = useLocalSearchParams();
-    courseDetails = JSON.parse(courseDetails);
+    let { courseDetail } = useLocalSearchParams();
+    courseDetail = JSON.parse(courseDetail);
     const navigation = useNavigation();
     const router = useRouter();
-    const [video, setVideo] = useState("zC0tnUyfol0");
+    const [video, setVideo] = useState("sVZRk_c3yDA");
     const [indexTab, setIndexTab] = useState(0);
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
@@ -44,7 +44,7 @@ const CourseDetails = () => {
                         }}
                         numberOfLines={1}
                     >
-                        {courseDetails.courseName}
+                        {courseDetail?.courseName}
                     </Text>
                     <Pressable
                         style={{
@@ -61,7 +61,7 @@ const CourseDetails = () => {
                 </View>
             ),
         });
-        setVideo("zC0tnUyfol0");
+        setVideo("sVZRk_c3yDA");
     }, [navigation]);
     const onTabLayout = (event, tabIndex) => {
         const { height } = event.nativeEvent.layout;
@@ -91,10 +91,10 @@ const CourseDetails = () => {
                             <Pressable
                                 onPress={() => {
                                     router.push({
-                                        pathname: `/course-details/${courseDetails.slug}`,
+                                        pathname: `/course-details/${courseDetail?.slug}`,
                                         params: {
-                                            courseDetails:
-                                                JSON.stringify(courseDetails),
+                                            courseDetail:
+                                                JSON.stringify(courseDetail),
                                         },
                                     });
                                 }}
@@ -106,7 +106,7 @@ const CourseDetails = () => {
                                         color: "#000",
                                     }}
                                 >
-                                    {courseDetails.courseName}
+                                    {courseDetail?.courseName}
                                 </Text>
                             </Pressable>
                             <View
@@ -118,14 +118,14 @@ const CourseDetails = () => {
                                 }}
                             >
                                 <Rating
-                                    numberRating={courseDetails.numberRating}
-                                    rating={courseDetails.rating}
+                                    numberRating={courseDetail?.numberRating}
+                                    rating={courseDetail?.rating}
                                 />
                                 <View style={{ flexDirection: "row", gap: 5 }}>
                                     <Text
                                         style={{ color: Colors.primaryBlack }}
                                     >
-                                        {courseDetails.source.length}
+                                        {courseDetail?.source?.length}
                                     </Text>
                                     <Text style={{ color: Colors.primaryGray }}>
                                         lessons
@@ -192,7 +192,7 @@ const CourseDetails = () => {
                                     onLayout={(event) => onTabLayout(event, 0)}
                                 >
                                     <Lessons
-                                        data={courseDetails}
+                                        data={courseDetail}
                                         lessonOnPress={setVideo}
                                     />
                                 </View>

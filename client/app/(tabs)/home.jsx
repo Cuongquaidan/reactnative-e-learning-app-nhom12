@@ -22,7 +22,7 @@ import TeacherItem from "../../components/TeacherItem";
 import { router } from "expo-router";
 import { useCartItems } from "../../context/CartContext";
 import { useAuthContext } from "../../context/AuthContext";
-
+import Constants from "expo-constants";
 const Home = () => {
     const { name, email } = useAuthContext();
     const [showCart, setShowCart] = useState(false);
@@ -79,16 +79,17 @@ const Home = () => {
         //
         const fetchData = async () => {
             const response = await fetch(
-                "https://673061bf66e42ceaf1601f49.mockapi.io/courses"
+                `${Constants.expoConfig.extra.API_PREFIX}/courses`
             );
             if (!response) throw new Error("Fetch courses failed");
             const resjson = await response.json();
+            console.log(resjson);
             setDataCourses(resjson);
         };
         fetchData();
         const fetchData1 = async () => {
             const response = await fetch(
-                "https://673061bf66e42ceaf1601f49.mockapi.io/teachers"
+                `${Constants.expoConfig.extra.API_PREFIX}/teachers`
             );
             if (!response) throw new Error("Fetch teachers failed");
             const resjson = await response.json();
@@ -292,7 +293,7 @@ const Home = () => {
                     </View>
                     <FlatList
                         data={dataCourses?.slice(0, 3)}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                         renderItem={({ item }) => (
                             <CourseItem course={item}></CourseItem>
                         )}
@@ -321,7 +322,7 @@ const Home = () => {
                     </View>
                     <FlatList
                         data={dataCourses?.slice(0, 3)}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                         renderItem={({ item }) => (
                             <CourseItem course={item}></CourseItem>
                         )}
@@ -358,7 +359,7 @@ const Home = () => {
                     /> */}
                     {dataCourses?.slice(0, 3).map((item) => (
                         <CourseItem
-                            key={item.id}
+                            key={item._id}
                             course={item}
                             isHorizontal={true}
                         ></CourseItem>
@@ -378,7 +379,7 @@ const Home = () => {
                     </View>
                     <FlatList
                         data={dataTeacher}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                         renderItem={({ item }) => (
                             <TeacherItem teacherInfo={item}></TeacherItem>
                         )}

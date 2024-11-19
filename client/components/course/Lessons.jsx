@@ -8,7 +8,7 @@ const Lessons = ({ data, video, lessonOnPress }) => {
     const [lessonActive, setLessonActive] = useState("");
     return (
         <View style={{ padding: 20 }}>
-            {source.map((item, index) => (
+            {source?.map((item, index) => (
                 <ChapterDropdown
                     data={item}
                     key={index}

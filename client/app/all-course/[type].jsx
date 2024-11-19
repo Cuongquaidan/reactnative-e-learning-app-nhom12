@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import CourseItem from "../../components/CourseItem";
 import Heading from "../../components/Heading";
-
+import Constants from "expo-constants";
 const AllCourse = () => {
     const navigation = useNavigation();
     let { type } = useLocalSearchParams();
@@ -11,7 +11,7 @@ const AllCourse = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(
-                "https://673061bf66e42ceaf1601f49.mockapi.io/courses"
+                `${Constants.expoConfig.extra.API_PREFIX}/courses`
             );
             if (!response) throw new Error("Fetch courses failed");
             const resjson = await response.json();
@@ -67,7 +67,7 @@ const AllCourse = () => {
                     dataCourses?.length > 0 &&
                     dataCourses?.map((item) => (
                         <CourseItem
-                            key={item.id}
+                            key={item._id}
                             course={item}
                             isHorizontal={true}
                         />

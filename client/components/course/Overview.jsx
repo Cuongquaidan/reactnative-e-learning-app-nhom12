@@ -107,7 +107,7 @@ const Overview = ({ course }) => {
             </View>
             <View style={{ marginTop: 30 }}>
                 <Heading title={"Benefits"}></Heading>
-                {benefit.map((item, index) => (
+                {benefit?.map((item, index) => (
                     <View key={index} style={{ padding: 5 }}>
                         <Text
                             style={{
@@ -137,7 +137,7 @@ const Overview = ({ course }) => {
                     <ViewMore></ViewMore>
                 </View>
 
-                {popularCourses.slice(0, 3).map((item) => (
+                {popularCourses?.slice(0, 3)?.map((item) => (
                     <CourseItem
                         key={item.id}
                         course={item}
