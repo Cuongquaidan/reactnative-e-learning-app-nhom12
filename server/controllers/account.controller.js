@@ -4,7 +4,7 @@ import AccountModel from "../models/account.model.js";
 export async function register(req, res) {
     await connect();
     try {
-        const { Accountname, avatar, dob, email, password } = req.body;
+        const { username, email, password } = req.body;
 
         const existingAccount = await AccountModel.findOne({ email });
         if (existingAccount) {
@@ -15,53 +15,45 @@ export async function register(req, res) {
         const hashedPassword = await bcrypt.hash(password, salt); // Mã hóa mật khẩu
 
         const newAccount = new AccountModel({
-            Accountname,
-            avatar,
-            dob,
+            username,
             email,
-            password,
+            password: hashedPassword,
         });
 
         const savedAccount = await newAccount.save();
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "Account created successfully",
             account: savedAccount,
         });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({ error: "Internal server error" });
     }
 }
-
 export async function login(req, res) {
     const { email, password } = req.body;
-
+    await connect();
     try {
         const existingAccount = await AccountModel.findOne({ email });
         if (!existingAccount)
-            return res.status(404).send({ error: "Email not found" });
+            return res.status(404).json({ error: "Email not found" });
 
-        AccountModel.findOne({ email })
-            .then((account) => {
-                bcrypt
-                    .compare(password, account.password)
-                    .then(() => {
-                        return res.status(200).send({
-                            message: "Login Successful...!",
-                            accountEmail: account.email,
-                        });
-                    })
-                    .catch((error) => {
-                        return res
-                            .status(400)
-                            .send({ error: "Password does not Match" });
-                    });
-            })
-            .catch((error) => {
-                return res.status(404).send({ error: "Email not Found" });
-            });
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            existingAccount.password
+        );
+
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ error: "Password does not match" });
+        }
+
+        return res.status(200).json({
+            message: "Login Successful...!",
+            email: existingAccount.email,
+            name: existingAccount.username,
+        });
     } catch (error) {
-        return res.status(500).send({ error });
+        return res.status(500).json({ error: "Internal server error" });
     }
 }
