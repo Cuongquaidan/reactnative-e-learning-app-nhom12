@@ -7,7 +7,7 @@ import Reviews from "../../components/course/Reviews";
 import Overview from "../../components/course/Overview";
 import { Tab, TabView } from "@rneui/themed";
 import CourseItem from "../../components/CourseItem";
-
+import Constants from "expo-constants";
 const TeacherInfo = () => {
     const [dataCourses, setDataCourses] = useState(null);
     const [indexTab, setIndexTab] = useState(0);
@@ -59,15 +59,11 @@ const TeacherInfo = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(
-                "https://673061bf66e42ceaf1601f49.mockapi.io/courses"
+                `${Constants.expoConfig.extra.API_PREFIX}/courses/author/${teacherInfo._id}`
             );
             if (!response) throw new Error("Fetch courses failed");
             const resjson = await response.json();
-            setDataCourses(
-                resjson.filter(
-                    (item) => item.authorId === teacherInfo.id.toString()
-                )
-            );
+            setDataCourses(resjson);
         };
         fetchData();
     }, []);
