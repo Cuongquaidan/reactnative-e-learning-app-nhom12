@@ -6,7 +6,7 @@ export const getCourseDetailsByCourseId = async (req, res) => {
         // get course id from req.params
         const { courseId } = req.params;
         // find course by course id
-        const course = await CourseDetailModel.find({ courseId });
+        const course = await CourseDetailModel.findOne({ courseId });
         // if course not found, return 404 error
         if (!course) {
             return res.status(404).json({ message: "Course not found" });

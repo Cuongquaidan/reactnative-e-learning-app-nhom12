@@ -23,6 +23,9 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
     const handleOnPress = () => {
         router.push({
             pathname: `/${type}/${slug}`,
+            params: {
+                courseId: JSON.stringify(_id),
+            },
         });
     };
 
