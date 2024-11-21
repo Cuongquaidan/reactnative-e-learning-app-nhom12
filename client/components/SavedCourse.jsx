@@ -1,8 +1,63 @@
-import {View,FlatList,Text,Pressable,Image} from 'react-native'
+import {View,FlatList,Text,Pressable,Image} from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import React from "react";
+import { useRouter } from "expo-router";
+import Constants from "expo-constants";
 
-const SavedCourse=({item})=>{
+const SavedCourse=({course,type='overview'})=>{
+const router = useRouter();
+const {
+    _id,
+    title,
+    desc,
+    image,
+    price,
+    rating,
+    numberRating,
+    numberOfLessons,
+    slug,
+} = course;
+const [courseDetail, setCourseDetail] = React.useState(
+    {
+        author: '',
+        avatar: '',
+        work: '',
+        desc: '',
+        benefit: [],
+        price: 0,
+        discount: 0,
+        courseName: '',
+        slug: '',
+        rating: 0,
+        numberRating: 0,
+        source: [],
+        courseId: _id
+    }
+);
+React.useEffect(() => {
+    try {
+        const getCourseDetail = async () => {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/courseDetails/${_id}`
+            );
+            const data = await response.json();
+            setCourseDetail(data);
+        };
+        getCourseDetail();
+    } catch (error) {
+        console.log(error);
+    }
+}, [course]);
+
+const handleOnPress = () => {
+    router.push({
+        pathname: `/${type}/${slug}`,
+        params: {
+            courseId: JSON.stringify(_id),
+        },
+    });
+};
     return(
         <Pressable
             style={{
@@ -12,15 +67,18 @@ const SavedCourse=({item})=>{
                 padding:10,
                 borderColor:'#ccc',
                 borderWidth:1,
-                borderRadius:10
+                borderRadius:10,
+                backgroundColor:'white'
             }}
+            onPress={handleOnPress}
         >
             <Image
-                source={{uri:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}}
+                source={{ uri: image }}
                 style={{
                     width:120,
                     height:120,
-                    borderRadius:10
+                    borderRadius:10,
+                    resizeMode:'contain'
                 }}
             />
             <View
@@ -41,7 +99,7 @@ const SavedCourse=({item})=>{
                             fontWeight:700
                         }}
                     >
-                        {item.courseName}
+                        {title}
                     </Text>
                     <Pressable>
                     <Feather name="bookmark" size={30} color="#00bcd5"/>
@@ -53,16 +111,17 @@ const SavedCourse=({item})=>{
                         color:"#6D6D6D"
                     }}
                 >
-                    {item.teacherName}
+                    {courseDetail.author}
                 </Text>
                 <Text
                     style={{
                         fontSize:19,
                         fontWeight:700,
-                        color:"#00bcd5"
+                        color:"#00bcd5",
+                        marginVertical:5
                     }}
                 >
-                    ${item.price}
+                    ${price}
                 </Text>
                 <View
                     style={{
@@ -72,7 +131,7 @@ const SavedCourse=({item})=>{
                 >
                     <EvilIcons name="star" size={20} color="#F5BF02" />
                     <Text>
-                        {item.rate}
+                        {rating}
                     </Text>
                     <Text
                         style={{
@@ -81,10 +140,10 @@ const SavedCourse=({item})=>{
                             marginStart:5
                         }}
                     >
-                        ({item.numberOfRating})
+                        ({numberRating})
                     </Text>
                     <Text>
-                        {item.numberOfLesson}
+                        {numberOfLessons}
                     </Text>
                     <Text
                         style={{
@@ -99,4 +158,5 @@ const SavedCourse=({item})=>{
         </Pressable>
     )
 }
+
 export default SavedCourse;
