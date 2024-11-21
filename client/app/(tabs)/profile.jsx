@@ -2,66 +2,26 @@ import { View, Text, FlatList, Pressable, Image,SafeAreaView } from "react-nativ
 import React from "react";
 import SavedCourse from "../../components/SavedCourse";
 import Entypo from '@expo/vector-icons/Entypo';
-
-const savedCoursesData=[
-    {
-        id:1,
-        courseName:'Product Design',
-        teacherName:'Dennis Sweeney',
-        price:190,
-        rate:4.5,
-        numberOfRating:1233,
-        numberOfLesson:12,
-        bookmark:false,
-        courseImage:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-        id:2,
-        courseName:'Website Design',
-        teacherName:'Ramono Wultschner',
-        price:59,
-        rate:4.5,
-        numberOfRating:1233,
-        numberOfLesson:12,
-        bookmark:false,
-        courseImage:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-        id:3,
-        courseName:'Mobile UI Design',
-        teacherName:'Ramono Wultschner',
-        price:320,
-        rate:4.5,
-        numberOfRating:1233,
-        numberOfLesson:12,
-        bookmark:false,
-        courseImage:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-        id:4,
-        courseName:'Product Design',
-        teacherName:'Ramono Wultschner',
-        price:67,
-        rate:4.5,
-        numberOfRating:1233,
-        numberOfLesson:12,
-        bookmark:false,
-        courseImage:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-        id:5,
-        courseName:'Product Design',
-        teacherName:'Ramono Wultschner',
-        price:67,
-        rate:4.5,
-        numberOfRating:1233,
-        numberOfLesson:12,
-        bookmark:false,
-        courseImage:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    }
-]
+import CourseItem from "../../components/SavedCourse";
+import { useAuthContext } from "../../context/AuthContext";
+import Constants from "expo-constants";
 
 const Profile = () => {
+    const [savedCoursesData, setSavedCoursesData] = React.useState(null);
+    const {name} = useAuthContext();
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/courses`
+            );
+            if (!response) throw new Error("Fetch courses failed");
+            const resjson = await response.json();
+            setSavedCoursesData(resjson);
+        };
+        fetchData();
+    }, []);
+
+
     return (   
         <SafeAreaView
             style={{
@@ -132,7 +92,7 @@ const Profile = () => {
                                         fontWeight: "600"
                                     }}
                                 >
-                                    Martha Rosie
+                                    {name}
                                 </Text>
                                 <Text
                                     style={{
@@ -248,8 +208,8 @@ const Profile = () => {
                     </View>
                 )}
                 data={savedCoursesData}
-                keyExtractor={item=>item.id.toString}
-                renderItem={({item})=><SavedCourse item={item}/>}
+                keyExtractor={item=>item._id}
+                renderItem={({item})=><CourseItem course={item}/>}
                 style={{
                     paddingHorizontal:20
                 }}
