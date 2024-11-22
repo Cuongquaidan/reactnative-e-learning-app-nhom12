@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import connect from "../database/connect.js";
 import AccountModel from "../models/account.model.js";
+import Cart from "../models/cart.model.js";
+
 export async function register(req, res) {
     await connect();
     try {
@@ -21,6 +23,9 @@ export async function register(req, res) {
         });
 
         const savedAccount = await newAccount.save();
+
+        const cart = new Cart({ accountId: savedAccount._id, courses: [] });
+        await cart.save();
 
         return res.status(201).json({
             message: "Account created successfully",

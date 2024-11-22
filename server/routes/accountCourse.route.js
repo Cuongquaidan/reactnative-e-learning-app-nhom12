@@ -3,7 +3,10 @@ import * as AccountCourseController from "../controllers/accountCourse.controlle
 
 const router = Router();
 
-router.get("/:accountId/:courseId", AccountCourseController.getAccountCourse);
-router.post("/create", AccountCourseController.createAccountCourse);
+router
+    .route("/:accountId/:courseId")
+    .get(AccountCourseController.getAccountCourse);
+
+router.route("/create").post(AccountCourseController.createAccountCourse);
 
 export default router;
