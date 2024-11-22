@@ -68,7 +68,7 @@ const handleOnPress = () => {
                 borderColor:'#ccc',
                 borderWidth:1,
                 borderRadius:10,
-                backgroundColor:'white'
+                
             }}
             onPress={handleOnPress}
         >
@@ -78,7 +78,7 @@ const handleOnPress = () => {
                     width:120,
                     height:120,
                     borderRadius:10,
-                    resizeMode:'contain'
+                    resizeMode:'cover'
                 }}
             />
             <View
