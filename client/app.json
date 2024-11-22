@@ -39,7 +39,7 @@
             "eas": {
                 "projectId": "c3d63fbd-586b-42b1-ae4c-5a466fd67a9f"
             },
-            "API_PREFIX": "http://192.168.1.22:8080/api/v1"
+            "API_PREFIX": "http://172.20.36.9:8080/api/v1"
         }
     }
 }
