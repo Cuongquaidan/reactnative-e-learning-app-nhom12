@@ -8,7 +8,7 @@ router.route("/:accountId").get(CartController.getCartByAccountId);
 
 router.route("/create").post(CartController.createCart);
 
-router.route("/update/:accountId").put(CartController.updateCart);
+router.route("/remove").patch(CartController.removeItem);
 
 router.route("/addCourse/:accountId").patch(CartController.addCourseToCart);
 

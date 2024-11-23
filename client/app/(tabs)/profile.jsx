@@ -12,22 +12,14 @@ import CourseItem from "../../components/SavedCourse";
 import { useAuthContext } from "../../context/AuthContext";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
+import { useSavedCoursesContext } from "../../context/SaveContext";
 
 const Profile = () => {
     const router = useRouter();
-    const [savedCoursesData, setSavedCoursesData] = React.useState(null);
-    const { name } = useAuthContext();
-    React.useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(
-                `${Constants.expoConfig.extra.API_PREFIX}/courses`
-            );
-            if (!response) throw new Error("Fetch courses failed");
-            const resjson = await response.json();
-            setSavedCoursesData(resjson);
-        };
-        fetchData();
-    }, []);
+    const { name, id } = useAuthContext();
+    console.log(name, id);
+
+    const { setSavedCourses, savedCourses } = useSavedCoursesContext();
     const handleLogout = () => {
         router.replace("/");
     };
@@ -243,9 +235,9 @@ const Profile = () => {
                         </View>
                     </View>
                 )}
-                data={savedCoursesData}
+                data={savedCourses.courses}
                 keyExtractor={(item) => item._id}
-                renderItem={({ item }) => <CourseItem course={item} />}
+                renderItem={({ item }) => <CourseItem courseId={item._id} />}
                 style={{
                     paddingHorizontal: 20,
                 }}

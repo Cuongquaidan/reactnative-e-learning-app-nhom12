@@ -28,7 +28,7 @@ const Home = () => {
     const [showCart, setShowCart] = useState(false);
     const [dataCourses, setDataCourses] = useState(null);
     const { cartItems, setCartItems } = useCartItems();
-    console.log(cartItems);
+    const { id } = useAuthContext();
     const [dataTeacher, setDataTeacher] = useState(null);
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
@@ -74,6 +74,31 @@ const Home = () => {
     //         slug: "UX-UI-foundation",
     //     },
     // ];
+
+    const handleRemove = async (courseId) => {
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/carts/remove`,
+                {
+                    method: "patch",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        accountId: id,
+                        courseId,
+                    }),
+                }
+            );
+
+            if (!response.ok) throw new Error("Error");
+            const data = await response.json();
+
+            setCartItems(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         //
@@ -463,6 +488,7 @@ const Home = () => {
                                         padding: 10,
                                         backgroundColor: "pink",
                                     }}
+                                    onPress={() => handleRemove(item._id)}
                                 >
                                     <Text
                                         style={{

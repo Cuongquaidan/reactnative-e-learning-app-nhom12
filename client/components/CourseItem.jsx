@@ -16,7 +16,6 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
     const {
         _id,
         title,
-        discount,
         image,
         price,
         rating,
