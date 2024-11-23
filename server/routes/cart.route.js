@@ -10,4 +10,6 @@ router.route("/create").post(CartController.createCart);
 
 router.route("/update/:accountId").put(CartController.updateCart);
 
+router.route("/addCourse/:accountId").patch(CartController.addCourseToCart);
+
 export default router;

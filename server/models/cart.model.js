@@ -7,31 +7,7 @@ const cartSchema = new mongoose.Schema(
             ref: "Account",
             required: true,
         },
-        courses: [
-            {
-                courseId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Course",
-                    required: true,
-                },
-                courseImage: {
-                    type: String,
-                    required: true,
-                },
-                courseTitle: {
-                    type: String,
-                    required: true,
-                },
-                coursePrice: {
-                    type: Number,
-                    required: true,
-                },
-                courseDiscount: {
-                    type: Number,
-                    required: true,
-                },
-            },
-        ],
+        courses: Array,
     },
     {
         timestamps: true,

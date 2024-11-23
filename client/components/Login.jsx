@@ -15,7 +15,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { setName, setEmail: setEmailAuth } = useAuthContext();
+    const { setName, setEmail: setEmailAuth, setId } = useAuthContext();
     const router = useRouter();
     // Hàm xử lý khi nhấn Submit
     const handleLogin = async () => {
@@ -50,8 +50,9 @@ const Login = () => {
             }
             const data = await response.json();
             Alert.alert("", data.message);
-            setEmailAuth(data.email);
-            setName(data.name);
+            setEmailAuth(data.account.email);
+            setName(data.account.username);
+            setId(data.account._id);
             setPassword("");
 
             setEmail("");

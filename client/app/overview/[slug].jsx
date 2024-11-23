@@ -13,6 +13,7 @@ import LevelRating from "../../components/LevelRating";
 import Reviews from "../../components/course/Reviews";
 import { useCartItems } from "../../context/CartContext";
 import Constants from "expo-constants";
+import { useAuthContext } from "../../context/AuthContext";
 
 const CourseDetailsOverview = () => {
     const { cartItems, setCartItems } = useCartItems();
@@ -20,17 +21,19 @@ const CourseDetailsOverview = () => {
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
     const [courseDetail, setCourseDetail] = useState(null);
-    let { courseId } = useLocalSearchParams();
-    courseId = JSON.parse(courseId);
+
+    const { id } = useAuthContext();
+    let { course } = useLocalSearchParams();
+    course = JSON.parse(course);
     const [video, setVideo] = useState("sVZRk_c3yDA");
     const navigation = useNavigation();
     const router = useRouter();
-
+    console.log(course);
     useEffect(() => {
         try {
             const getCourseDetail = async () => {
                 const response = await fetch(
-                    `${Constants.expoConfig.extra.API_PREFIX}/courseDetails/${courseId}`
+                    `${Constants.expoConfig.extra.API_PREFIX}/courseDetails/${course._id}`
                 );
                 const data = await response.json();
                 setCourseDetail(data);
@@ -39,7 +42,36 @@ const CourseDetailsOverview = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [courseId]);
+    }, []);
+
+    const handleAddToCart = async () => {
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/carts/addCourse/${id}`,
+                {
+                    method: "patch",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        course: course,
+                        accountId: id,
+                    }),
+                }
+            );
+            if (!response.ok) {
+                const errorText = await response.text(); // Retrieve response body as text
+                console.error(
+                    `Response error: ${response.status} - ${errorText}`
+                );
+                return;
+            }
+            const data = await response.json();
+            setCartItems(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         navigation.setOptions({
@@ -333,10 +365,7 @@ const CourseDetailsOverview = () => {
                             radius={5}
                             size="lg"
                             onPress={() => {
-                                setCartItems((prev) => {
-                                    const updatedCart = [...prev, courseDetail];
-                                    return updatedCart;
-                                });
+                                handleAddToCart();
                             }}
                         />
                     </View>

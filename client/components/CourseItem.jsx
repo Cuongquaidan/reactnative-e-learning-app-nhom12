@@ -5,28 +5,88 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "../constants/Colors";
 import { useRouter } from "expo-router";
 import Rating from "./Rating";
+import { useAuthContext } from "../context/AuthContext";
+import Constants from "expo-constants";
+import { useSavedCoursesContext } from "../context/SaveContext";
 
 const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
     const router = useRouter();
+    const { savedCourses, setSavedCourses } = useSavedCoursesContext();
 
     const {
         _id,
         title,
-        desc,
+        discount,
         image,
         price,
         rating,
         numberRating,
         numberOfLessons,
         slug,
+        desc,
     } = course;
+    const { id } = useAuthContext();
+
     const handleOnPress = () => {
         router.push({
             pathname: `/${type}/${slug}`,
             params: {
-                courseId: JSON.stringify(_id),
+                course: JSON.stringify(course),
             },
         });
+    };
+
+    const handleSaveCourse = async () => {
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/courseSaveds/course-saved`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        accountId: id,
+                        course: course,
+                    }),
+                }
+            );
+            if (!response.ok) {
+                const errorText = await response.text(); // Retrieve response body as text
+                console.error(
+                    `Response error: ${response.status} - ${errorText}`
+                );
+                return;
+            }
+
+            const data = await response.json();
+            setSavedCourses(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleUnsave = async (courseId) => {
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/courseSaveds/unsave`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        accountId: id,
+                        courseId: courseId,
+                    }),
+                }
+            );
+            if (!response.ok) throw new Error("Error");
+            const data = await response.json();
+            setSavedCourses(data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -80,9 +140,28 @@ const CourseItem = ({ course, isHorizontal = false, type = "overview" }) => {
                         </Text>
                     </Pressable>
                     <MaterialIcons
-                        name="bookmark-outline"
+                        name={
+                            savedCourses?.courses?.some(
+                                (item) => item._id === _id
+                            )
+                                ? "bookmark"
+                                : "bookmark-outline"
+                        }
                         size={36}
-                        color="black"
+                        color={
+                            savedCourses?.courses?.some(
+                                (item) => item._id === _id
+                            )
+                                ? Colors.primaryBlue
+                                : "black"
+                        }
+                        onPress={
+                            savedCourses?.courses?.some(
+                                (item) => item._id === _id
+                            )
+                                ? () => handleUnsave(_id)
+                                : handleSaveCourse
+                        }
                     />
                 </View>
                 <Text

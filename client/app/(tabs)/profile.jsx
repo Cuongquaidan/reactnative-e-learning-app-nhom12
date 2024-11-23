@@ -1,14 +1,22 @@
-import { View, Text, FlatList, Pressable, Image,SafeAreaView } from "react-native";
+import {
+    View,
+    Text,
+    FlatList,
+    Pressable,
+    Image,
+    SafeAreaView,
+} from "react-native";
 import React from "react";
-import SavedCourse from "../../components/SavedCourse";
-import Entypo from '@expo/vector-icons/Entypo';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CourseItem from "../../components/SavedCourse";
 import { useAuthContext } from "../../context/AuthContext";
 import Constants from "expo-constants";
+import { useRouter } from "expo-router";
 
 const Profile = () => {
+    const router = useRouter();
     const [savedCoursesData, setSavedCoursesData] = React.useState(null);
-    const {name} = useAuthContext();
+    const { name } = useAuthContext();
     React.useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(
@@ -20,30 +28,31 @@ const Profile = () => {
         };
         fetchData();
     }, []);
-
-
-    return (   
+    const handleLogout = () => {
+        router.replace("/");
+    };
+    return (
         <SafeAreaView
             style={{
-                flex:1
+                flex: 1,
             }}
         >
             <FlatList
-                ListHeaderComponent={()=>(
+                ListHeaderComponent={() => (
                     <View>
                         <View
                             style={{
-                                flexDirection:"row",
-                                justifyContent:"center",
-                                alignItems:"center",
-                                paddingTop:30,
-                                paddingBottom:30
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                paddingTop: 30,
+                                paddingBottom: 30,
                             }}
                         >
                             <Text
                                 style={{
                                     fontSize: 24,
-                                    fontWeight: "600"
+                                    fontWeight: "600",
                                 }}
                             >
                                 User's profile
@@ -51,45 +60,69 @@ const Profile = () => {
                             <Pressable
                                 style={{
                                     position: "absolute",
-                                    right:0
-                            }}>
-                                <Entypo name="dots-three-vertical" size={28} color="black" />
+                                    right: 0,
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    gap: 10,
+                                }}
+                                onPress={handleLogout}
+                            >
+                                <Text
+                                    style={{
+                                        fontWeight: "600",
+                                    }}
+                                >
+                                    Logout
+                                </Text>
+                                <MaterialIcons
+                                    name="logout"
+                                    size={30}
+                                    color="black"
+                                />
                             </Pressable>
                         </View>
                         <View>
                             <View
                                 style={{
-                                    position:"relative",
-                                    height:150,
-                                    width:"100%",
-                                    alignItems:"center"
+                                    position: "relative",
+                                    height: 150,
+                                    width: "100%",
+                                    alignItems: "center",
                                 }}
                             >
-                            <Image 
-                                source={{uri:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}} 
-                                style={{width:'100%',height:150, borderRadius:20}}
-                            />
-                            <Image 
-                            source={{uri:"https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}} 
-                                style={{
-                                    width:120,
-                                    height:120,
-                                    borderRadius:100,
-                                    position:"absolute",
-                                    bottom:-60
-                                }}
-                            />
+                                <Image
+                                    source={{
+                                        uri: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                                    }}
+                                    style={{
+                                        width: "100%",
+                                        height: 150,
+                                        borderRadius: 20,
+                                    }}
+                                />
+                                <Image
+                                    source={{
+                                        uri: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                                    }}
+                                    style={{
+                                        width: 120,
+                                        height: 120,
+                                        borderRadius: 100,
+                                        position: "absolute",
+                                        bottom: -60,
+                                    }}
+                                />
                             </View>
                             <View
                                 style={{
-                                    alignItems:"center",
-                                    marginTop:80
+                                    alignItems: "center",
+                                    marginTop: 80,
                                 }}
                             >
                                 <Text
                                     style={{
                                         fontSize: 24,
-                                        fontWeight: "600"
+                                        fontWeight: "600",
                                     }}
                                 >
                                     {name}
@@ -97,38 +130,41 @@ const Profile = () => {
                                 <Text
                                     style={{
                                         fontSize: 16,
-                                        color:'#ccc'
+                                        color: "#ccc",
                                     }}
-                                >UX/UI Designer</Text>
+                                >
+                                    UX/UI Designer
+                                </Text>
                                 <View
-                                style={{
-                                    flexDirection:"row",
-                                    justifyContent:"center",
-                                    alignItems:"center",
-                                    marginTop:30
-                                }}>
+                                    style={{
+                                        flexDirection: "row",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        marginTop: 30,
+                                    }}
+                                >
                                     <View
                                         style={{
-                                            justifyContent:"center",
-                                            alignItems:"center",
-                                            height:60,
-                                            width:"33%",
-                                            borderEndWidth:1,
-                                            borderEndColor:'#ccc'
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            height: 60,
+                                            width: "33%",
+                                            borderEndWidth: 1,
+                                            borderEndColor: "#ccc",
                                         }}
                                     >
                                         <Text
                                             style={{
-                                                fontSize:18,
-                                                fontWeight:700
+                                                fontSize: 18,
+                                                fontWeight: 700,
                                             }}
                                         >
                                             25
                                         </Text>
                                         <Text
                                             style={{
-                                                fontSize:13,
-                                                color:'#ccc'
+                                                fontSize: 13,
+                                                color: "#ccc",
                                             }}
                                         >
                                             Save
@@ -136,26 +172,26 @@ const Profile = () => {
                                     </View>
                                     <View
                                         style={{
-                                            justifyContent:"center",
-                                            alignItems:"center",
-                                            height:60,
-                                            width:"33%",
-                                            borderEndWidth:1,
-                                            borderEndColor:'#ccc'
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            height: 60,
+                                            width: "33%",
+                                            borderEndWidth: 1,
+                                            borderEndColor: "#ccc",
                                         }}
                                     >
                                         <Text
                                             style={{
-                                                fontSize:18,
-                                                fontWeight:700
+                                                fontSize: 18,
+                                                fontWeight: 700,
                                             }}
                                         >
                                             24
                                         </Text>
                                         <Text
                                             style={{
-                                                fontSize:13,
-                                                color:'#ccc'
+                                                fontSize: 13,
+                                                color: "#ccc",
                                             }}
                                         >
                                             On Going
@@ -163,24 +199,24 @@ const Profile = () => {
                                     </View>
                                     <View
                                         style={{
-                                            justifyContent:"center",
-                                            alignItems:"center",
-                                            height:60,
-                                            width:"33%"
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            height: 60,
+                                            width: "33%",
                                         }}
                                     >
                                         <Text
                                             style={{
-                                                fontSize:18,
-                                                fontWeight:700
+                                                fontSize: 18,
+                                                fontWeight: 700,
                                             }}
                                         >
                                             98
                                         </Text>
                                         <Text
                                             style={{
-                                                fontSize:13,
-                                                color:'#ccc'
+                                                fontSize: 13,
+                                                color: "#ccc",
                                             }}
                                         >
                                             Completed
@@ -191,15 +227,15 @@ const Profile = () => {
                         </View>
                         <View
                             style={{
-                                paddingTop:10
+                                paddingTop: 10,
                             }}
                         >
                             <Text
                                 style={{
-                                    marginTop:20,
-                                    marginBottom:10,
-                                    fontSize:22,
-                                    fontWeight:700
+                                    marginTop: 20,
+                                    marginBottom: 10,
+                                    fontSize: 22,
+                                    fontWeight: 700,
                                 }}
                             >
                                 Saved courses
@@ -208,17 +244,17 @@ const Profile = () => {
                     </View>
                 )}
                 data={savedCoursesData}
-                keyExtractor={item=>item._id}
-                renderItem={({item})=><CourseItem course={item}/>}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => <CourseItem course={item} />}
                 style={{
-                    paddingHorizontal:20
+                    paddingHorizontal: 20,
                 }}
                 contentContainerStyle={{
-                    rowGap:10
+                    rowGap: 10,
                 }}
             />
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default Profile;
