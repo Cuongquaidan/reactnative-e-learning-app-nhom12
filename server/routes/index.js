@@ -5,6 +5,7 @@ import TeacherRoute from "./teacher.route.js";
 import CourseDetailRoute from "./courseDetail.route.js";
 import AccountCourseRoute from "./accountCourse.route.js";
 import CartRoute from "./cart.route.js";
+import CourseSavedRoute from "./courseSaved.route.js";
 
 const router = Router();
 router.use("/accounts", AccountRoute);
@@ -13,4 +14,5 @@ router.use("/teachers", TeacherRoute);
 router.use("/courseDetails", CourseDetailRoute);
 router.use("/accountCourses", AccountCourseRoute);
 router.use("/carts", CartRoute);
+router.use("/courseSaved", CourseSavedRoute);
 export default router;
