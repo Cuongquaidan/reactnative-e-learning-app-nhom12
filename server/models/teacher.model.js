@@ -12,6 +12,7 @@
 
     accountId ref to AccountModel
 */
+
 import mongoose from "mongoose";
 
 const TeacherSchema = mongoose.Schema(

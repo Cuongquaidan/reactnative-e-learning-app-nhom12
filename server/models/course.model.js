@@ -28,7 +28,7 @@ const CourseSchema = mongoose.Schema(
         },
         numberOfLessons: {
             type: Number,
-            required: true,
+            default: 0,
         },
         slug: {
             type: String,
