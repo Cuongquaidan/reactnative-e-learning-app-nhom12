@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
     View,
     Text,
@@ -6,8 +6,10 @@ import {
     FlatList,
     StyleSheet,
     Modal,
-    Button,
+    Dimensions,
 } from "react-native";
+import { v4 as uuidv4 } from "uuid";
+import "react-native-get-random-values";
 
 const ChatbotComponent = () => {
     const [messages, setMessages] = useState([
@@ -19,21 +21,19 @@ const ChatbotComponent = () => {
         },
     ]);
     const [isVisible, setIsVisible] = useState(false); // Trạng thái hiển thị chatbox
+    const flatListRef = useRef(null); // Tham chiếu FlatList
 
     const handleOptionSelect = (option) => {
-        // Thêm câu hỏi của người dùng vào danh sách tin nhắn
         setMessages((prevMessages) => [
             ...prevMessages,
             { id: Date.now().toString(), text: option.text, type: "user" },
         ]);
 
-        // Tìm câu hỏi hoặc câu trả lời tiếp theo
         const nextQuestion = chatbotData.find(
             (item) => item.id === option.nextId
         );
 
         if (nextQuestion) {
-            // Thêm câu trả lời của bot vào danh sách tin nhắn
             setMessages((prevMessages) => [
                 ...prevMessages,
                 {
@@ -44,10 +44,14 @@ const ChatbotComponent = () => {
                 },
             ]);
         }
+
+        // Đợi tin nhắn cập nhật xong và cuộn đến cuối
+        setTimeout(() => {
+            flatListRef.current?.scrollToEnd({ animated: true });
+        }, 100); // Đảm bảo FlatList được render trước khi cuộn
     };
 
     const resetChat = () => {
-        // Đặt lại tin nhắn và bắt đầu lại từ câu hỏi đầu tiên
         setMessages([
             {
                 id: "1",
@@ -77,7 +81,7 @@ const ChatbotComponent = () => {
                 item.options &&
                 item.options.map((option, index) => (
                     <TouchableOpacity
-                        key={index}
+                        key={uuidv4()}
                         style={styles.optionButton}
                         onPress={() => handleOptionSelect(option)}
                     >
@@ -88,16 +92,16 @@ const ChatbotComponent = () => {
     );
 
     return (
-        <View style={styles.container}>
+        <View>
             {/* Nút nổi để mở chatbox */}
             <TouchableOpacity
                 style={styles.floatingButton}
                 onPress={() => setIsVisible(true)}
             >
-                <Text style={styles.floatingButtonText}>?</Text>
+                <Text style={styles.floatingButtonText}>💬</Text>
             </TouchableOpacity>
 
-            {/* Modal hiển thị chatbox khi isVisible = true */}
+            {/* Modal hiển thị chatbox */}
             <Modal
                 visible={isVisible}
                 animationType="slide"
@@ -107,25 +111,30 @@ const ChatbotComponent = () => {
                 <View style={styles.modalContainer}>
                     <View style={styles.chatbox}>
                         <FlatList
+                            ref={flatListRef} // Tham chiếu FlatList
                             data={messages}
                             renderItem={renderMessage}
-                            keyExtractor={(item) => item.id}
+                            keyExtractor={(item) => uuidv4()}
                             contentContainerStyle={styles.chatContainer}
                         />
-                        <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={() => setIsVisible(false)} // Đóng chatbox khi bấm nút đóng
-                        >
-                            <Text style={styles.closeButtonText}>X</Text>
-                        </TouchableOpacity>
-
-                        {/* Nút Reset */}
-                        <TouchableOpacity
-                            style={styles.resetButton}
-                            onPress={resetChat} // Reset chat
-                        >
-                            <Text style={styles.resetButtonText}>Reset</Text>
-                        </TouchableOpacity>
+                        <View style={styles.buttonRow}>
+                            <TouchableOpacity
+                                style={styles.actionButton}
+                                onPress={resetChat}
+                            >
+                                <Text style={styles.actionButtonText}>
+                                    🔄 Reset
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.actionButton}
+                                onPress={() => setIsVisible(false)}
+                            >
+                                <Text style={styles.actionButtonText}>
+                                    ❌ Close
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -135,6 +144,7 @@ const ChatbotComponent = () => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -142,95 +152,83 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 100,
         right: 30,
-        backgroundColor: "#007AFF",
+        backgroundColor: "#4CAF50",
         width: 60,
         height: 60,
         borderRadius: 30,
         justifyContent: "center",
         alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 5,
     },
     floatingButtonText: {
-        fontSize: 30,
+        fontSize: 24,
         color: "#fff",
     },
     modalContainer: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-end",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     chatbox: {
-        position: "relative",
-        width: "90%",
+        width: "100%",
+        height: Dimensions.get("window").height * 0.7,
         backgroundColor: "#fff",
-        padding: 10,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        height: "90%",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        padding: 16,
     },
     chatContainer: {
-        paddingBottom: 60, // Để có không gian cho nút đóng
+        paddingBottom: 80,
     },
     messageContainer: {
-        marginBottom: 10,
-        padding: 10,
-        borderRadius: 10,
+        marginBottom: 16,
+        padding: 12,
+        borderRadius: 12,
         maxWidth: "80%",
     },
     botMessage: {
-        backgroundColor: "#e5e5ea",
+        backgroundColor: "#E8F5E9",
         alignSelf: "flex-start",
     },
     userMessage: {
-        backgroundColor: "#007AFF",
+        backgroundColor: "#4CAF50",
         alignSelf: "flex-end",
     },
     messageText: {
         fontSize: 16,
-        color: "#fff",
     },
     userText: {
         color: "#fff",
     },
     optionButton: {
-        marginTop: 5,
-        padding: 8,
-        backgroundColor: "#007AFF",
-        borderRadius: 5,
+        marginTop: 8,
+        padding: 10,
+        backgroundColor: "#4CAF50",
+        borderRadius: 6,
     },
     optionText: {
         color: "#fff",
+        fontWeight: "bold",
     },
-    closeButton: {
-        position: "absolute",
-        top: 10,
-        right: 10,
-        backgroundColor: "red",
-        borderRadius: 20,
-        padding: 5,
-        height: 40,
-        width: 40,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    closeButtonText: {
-        color: "#fff",
-        fontSize: 20,
-    },
-    buttonContainer: {
-        top: 10,
+    buttonRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 10,
     },
-    resetButton: {
-        backgroundColor: "#FF6347", // Màu của nút reset
-        padding: 10,
-        borderRadius: 5,
+    actionButton: {
+        backgroundColor: "#FF5722",
+        padding: 12,
+        borderRadius: 6,
+        flex: 0.45,
     },
-    resetButtonText: {
+    actionButtonText: {
         color: "#fff",
-        fontSize: 16,
+        textAlign: "center",
+        fontWeight: "bold",
     },
 });
 
@@ -239,27 +237,51 @@ export default ChatbotComponent;
 const chatbotData = [
     {
         id: "1",
-        question: "Xin chào! Bạn muốn hỏi về điều gì?",
+        question: "Chào bạn! Bạn cần hỗ trợ về điều gì?",
         options: [
-            { text: "Hướng dẫn sử dụng sản phẩm", nextId: "2" },
-            { text: "Câu hỏi về giá cả", nextId: "3" },
+            { text: "Hướng dẫn sử dụng ứng dụng", nextId: "2" },
+            { text: "Thông tin về cách đăng bán khóa học", nextId: "3" },
         ],
     },
     {
         id: "2",
-        question: "Bạn cần hướng dẫn về phần nào?",
+        question: "Bạn cần hướng dẫn về tính năng nào trong ứng dụng?",
         options: [
-            { text: "Cách cài đặt", nextId: "4" },
-            { text: "Cách bảo trì", nextId: "5" },
+            { text: "Cách thêm vào giỏ hàng", nextId: "4" },
+            { text: "Cách lưu khóa học", nextId: "5" },
+            { text: "Tìm hiểu về overview khóa học", nextId: "6" },
+            { text: "Chi tiết khóa học", nextId: "7" },
+            { text: "Quay lại", nextId: "1" },
         ],
     },
     {
         id: "3",
-        question: "Chúng tôi có thể giúp bạn như thế nào với giá cả?",
-        options: [
-            { text: "Giá sản phẩm", nextId: "6" },
-            { text: "Khuyến mãi", nextId: "7" },
-        ],
+        question:
+            "Hiện tại, hệ thống chưa hỗ trợ chức năng đăng bán khóa học dành cho người dùng đăng ký. Nếu có thay đổi trong tương lai, chúng tôi sẽ thông báo đến bạn. Cảm ơn bạn đã quan tâm!",
+        options: [{ text: "Quay lại", nextId: "1" }],
     },
-    // Thêm các bước khác...
+    {
+        id: "4",
+        question:
+            "Để thêm khóa học vào giỏ hàng, bạn vào phần *Overview khóa học* và chọn nút *Add to Cart*. Giỏ hàng có thể được truy cập từ trang *Home*.",
+        options: [{ text: "Quay lại", nextId: "2" }],
+    },
+    {
+        id: "5",
+        question:
+            "Để lưu khóa học, bạn chọn biểu tượng lưu ở góc trên của mỗi khóa học. Nhấn lại để hủy lưu. Các khóa học đã lưu có thể được xem ở trang *Profile*.",
+        options: [{ text: "Quay lại", nextId: "2" }],
+    },
+    {
+        id: "6",
+        question:
+            "Phần *Overview* cung cấp video mẫu giúp bạn đánh giá khóa học có phù hợp với nhu cầu của mình hay không trước khi quyết định mua.",
+        options: [{ text: "Quay lại", nextId: "2" }],
+    },
+    {
+        id: "7",
+        question:
+            "Khi xem chi tiết khóa học, bạn sẽ thấy thông tin đầy đủ về nội dung, tài nguyên khóa học, và lợi ích như được giáo viên hỗ trợ sửa các dự án của bạn.",
+        options: [{ text: "Quay lại", nextId: "2" }],
+    },
 ];
