@@ -15,6 +15,25 @@ export async function getAccountCourse(req, res) {
     }
 }
 
+export async function getAccountCoursesByAccountId(req, res) {
+    try {
+        const { accountId } = req.params;
+
+        const accountCourses = await AccountCourse.find({
+            accountId,
+        });
+
+        if (!accountCourses || accountCourses.length === 0) {
+            return res
+                .status(404)
+                .json({ message: "AccountCourses not found" });
+        }
+
+        return res.status(200).json(accountCourses);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
 export async function createAccountCourse(req, res) {
     try {
         const existingAccountCourse = await AccountCourse.findOne({

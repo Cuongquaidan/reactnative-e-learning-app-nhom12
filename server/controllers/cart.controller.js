@@ -31,9 +31,10 @@ export async function createCart(req, res) {
         return res.status(500).json({ message: error.message });
     }
 }
-export async function updateCart(req, res) {
+export async function removeItem(req, res) {
     try {
-        const { accountId } = req.params;
+        const { accountId } = req.body;
+
         let cart = await Cart.findOne({ accountId });
         if (!cart) {
             cart = new Cart({
@@ -41,7 +42,37 @@ export async function updateCart(req, res) {
                 courses: [],
             });
         }
-        cart.courses = req.body.courses;
+        cart.courses = cart.courses.filter(
+            (item) => item._id.toString() !== req.body.courseId
+        );
+        const data = await cart.save();
+        if (!data) return res.status(400).json({ message: "Bad request" });
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export async function addCourseToCart(req, res) {
+    try {
+        const { accountId } = req.body;
+        let cart = await Cart.findOne({ accountId });
+        if (!cart) {
+            cart = new Cart({
+                accountId,
+                courses: [],
+            });
+        }
+
+        const isDuplicate = cart.courses.some(
+            (item) => item._id.toString() === req.body.course._id
+        );
+
+        if (isDuplicate) {
+            return res.status(400).json({ message: "Course already exists" });
+        }
+
+        cart.courses.push(req.body.course);
         const data = await cart.save();
         if (!data) return res.status(400).json({ message: "Bad request" });
         return res.status(200).json(data);

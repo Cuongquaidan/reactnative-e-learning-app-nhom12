@@ -4,9 +4,12 @@ import * as AccountCourseController from "../controllers/accountCourse.controlle
 const router = Router();
 
 router
-    .route("/:accountId/:courseId")
-    .get(AccountCourseController.getAccountCourse);
+    .route("/getList/:accountId")
+    .get(AccountCourseController.getAccountCoursesByAccountId);
 
 router.route("/create").post(AccountCourseController.createAccountCourse);
+router
+    .route("/:accountId/:courseId")
+    .get(AccountCourseController.getAccountCourse);
 
 export default router;

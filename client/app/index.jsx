@@ -18,11 +18,11 @@ const Index = () => {
         const updatedHeights = [...tabHeights];
         updatedHeights[tabIndex] = height;
         setTabHeights(updatedHeights);
-        setContentHeight(updatedHeights[indexTab]); // Cập nhật chiều cao hiện tại
+        setContentHeight(updatedHeights[indexTab]);
     };
 
     useEffect(() => {
-        setContentHeight(tabHeights[indexTab]); // Khi tab thay đổi, cập nhật chiều cao tương ứng
+        setContentHeight(tabHeights[indexTab]);
     }, [indexTab, tabHeights]);
     useEffect(() => {
         navigation.setOptions({

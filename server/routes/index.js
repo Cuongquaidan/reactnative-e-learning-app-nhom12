@@ -14,5 +14,5 @@ router.use("/teachers", TeacherRoute);
 router.use("/courseDetails", CourseDetailRoute);
 router.use("/accountCourses", AccountCourseRoute);
 router.use("/carts", CartRoute);
-router.use("/courseSaved", CourseSavedRoute);
+router.use("/courseSaveds", CourseSavedRoute);
 export default router;

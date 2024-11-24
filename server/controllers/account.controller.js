@@ -55,8 +55,7 @@ export async function login(req, res) {
 
         return res.status(200).json({
             message: "Login Successful...!",
-            email: existingAccount.email,
-            name: existingAccount.username,
+            account: existingAccount,
         });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });

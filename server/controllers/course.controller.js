@@ -86,3 +86,17 @@ export async function getCourseBySearchKey(req, res) {
         return res.status(500).json({ error: error.message });
     }
 }
+
+// Write function getCourseById for CourseModel
+
+export async function getCourseById(req, res) {
+    try {
+        const response = await CourseModel.findById(req.params.courseId);
+        if (!response) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
