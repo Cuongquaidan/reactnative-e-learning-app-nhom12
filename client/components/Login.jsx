@@ -11,6 +11,7 @@ import { Colors } from "../constants/Colors";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useAuthContext } from "../context/AuthContext";
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
     // Hàm xử lý khi nhấn Submit
     const handleLogin = async () => {
         if (!email || !password) {
-            Alert.alert("Error", "Both email and password are required.");
+            // Alert.alert("Error", "Both email and password are required.");
             return;
         }
         // Kiểm tra định dạng email cơ bản

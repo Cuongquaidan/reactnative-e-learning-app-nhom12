@@ -1,5 +1,5 @@
 import { View, Text, Pressable, ScrollView, Dimensions } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import YoutubePlayer from "react-native-youtube-iframe";
@@ -28,7 +28,10 @@ const CourseDetailsOverview = () => {
     const [video, setVideo] = useState("sVZRk_c3yDA");
     const navigation = useNavigation();
     const router = useRouter();
-    console.log(course);
+
+    const isAdded = useMemo(() => {
+        return cartItems.courses.some((item) => item._id === course._id);
+    }, [cartItems]);
     useEffect(() => {
         try {
             const getCourseDetail = async () => {
@@ -352,18 +355,34 @@ const CourseDetailsOverview = () => {
                                     <AntDesign
                                         name="shoppingcart"
                                         size={24}
-                                        color="white"
+                                        color={isAdded ? "black" : "white"}
                                     />
-                                    <Text
-                                        style={{ fontSize: 20, color: "white" }}
-                                    >
-                                        Add to cart
-                                    </Text>
+                                    {isAdded ? (
+                                        <Text
+                                            style={{
+                                                fontSize: 20,
+                                                color: "black",
+                                                fontWeight: "700",
+                                            }}
+                                        >
+                                            Added
+                                        </Text>
+                                    ) : (
+                                        <Text
+                                            style={{
+                                                fontSize: 20,
+                                                color: "white",
+                                            }}
+                                        >
+                                            Add to cart
+                                        </Text>
+                                    )}
                                 </View>
                             }
                             color={Colors.primaryBlue}
                             radius={5}
                             size="lg"
+                            disabled={isAdded}
                             onPress={() => {
                                 handleAddToCart();
                             }}
