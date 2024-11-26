@@ -108,7 +108,6 @@ const Home = () => {
             );
             if (!response) throw new Error("Fetch courses failed");
             const resjson = await response.json();
-            console.log(resjson);
             setDataCourses(resjson);
         };
         fetchData();

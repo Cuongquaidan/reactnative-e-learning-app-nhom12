@@ -5,7 +5,6 @@ import Constants from "expo-constants";
 
 const CourseProcess = ({ course }) => {
     const { courseId, process } = course;
-    console.log(courseId, process);
 
     const [data, setData] = useState();
 
@@ -25,7 +24,6 @@ const CourseProcess = ({ course }) => {
                 const data = await response.json();
                 setData(data);
 
-                console.log(data);
             } catch (error) {
                 console.error(`Fetch data error: ${error}`);
             }
