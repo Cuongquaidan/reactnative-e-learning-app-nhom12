@@ -17,7 +17,6 @@ import { useSavedCoursesContext } from "../../context/SaveContext";
 const Profile = () => {
     const router = useRouter();
     const { name, id } = useAuthContext();
-    console.log(name, id);
 
     const { setSavedCourses, savedCourses } = useSavedCoursesContext();
     const handleLogout = () => {
