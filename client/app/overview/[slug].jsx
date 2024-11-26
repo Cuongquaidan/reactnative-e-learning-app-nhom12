@@ -1,5 +1,5 @@
 import { View, Text, Pressable, ScrollView, Dimensions } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import YoutubePlayer from "react-native-youtube-iframe";
@@ -13,6 +13,7 @@ import LevelRating from "../../components/LevelRating";
 import Reviews from "../../components/course/Reviews";
 import { useCartItems } from "../../context/CartContext";
 import Constants from "expo-constants";
+import { useAuthContext } from "../../context/AuthContext";
 
 const CourseDetailsOverview = () => {
     const { cartItems, setCartItems } = useCartItems();
@@ -20,17 +21,22 @@ const CourseDetailsOverview = () => {
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
     const [courseDetail, setCourseDetail] = useState(null);
-    let { courseId } = useLocalSearchParams();
-    courseId = JSON.parse(courseId);
+
+    const { id } = useAuthContext();
+    let { course } = useLocalSearchParams();
+    course = JSON.parse(course);
     const [video, setVideo] = useState("sVZRk_c3yDA");
     const navigation = useNavigation();
     const router = useRouter();
 
+    const isAdded = useMemo(() => {
+        return cartItems.courses.some((item) => item._id === course._id);
+    }, [cartItems]);
     useEffect(() => {
         try {
             const getCourseDetail = async () => {
                 const response = await fetch(
-                    `${Constants.expoConfig.extra.API_PREFIX}/courseDetails/${courseId}`
+                    `${Constants.expoConfig.extra.API_PREFIX}/courseDetails/${course._id}`
                 );
                 const data = await response.json();
                 setCourseDetail(data);
@@ -39,7 +45,36 @@ const CourseDetailsOverview = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [courseId]);
+    }, []);
+
+    const handleAddToCart = async () => {
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/carts/addCourse/${id}`,
+                {
+                    method: "patch",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        course: course,
+                        accountId: id,
+                    }),
+                }
+            );
+            if (!response.ok) {
+                const errorText = await response.text(); // Retrieve response body as text
+                console.error(
+                    `Response error: ${response.status} - ${errorText}`
+                );
+                return;
+            }
+            const data = await response.json();
+            setCartItems(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         navigation.setOptions({
@@ -320,23 +355,36 @@ const CourseDetailsOverview = () => {
                                     <AntDesign
                                         name="shoppingcart"
                                         size={24}
-                                        color="white"
+                                        color={isAdded ? "black" : "white"}
                                     />
-                                    <Text
-                                        style={{ fontSize: 20, color: "white" }}
-                                    >
-                                        Add to cart
-                                    </Text>
+                                    {isAdded ? (
+                                        <Text
+                                            style={{
+                                                fontSize: 20,
+                                                color: "black",
+                                                fontWeight: "700",
+                                            }}
+                                        >
+                                            Added
+                                        </Text>
+                                    ) : (
+                                        <Text
+                                            style={{
+                                                fontSize: 20,
+                                                color: "white",
+                                            }}
+                                        >
+                                            Add to cart
+                                        </Text>
+                                    )}
                                 </View>
                             }
                             color={Colors.primaryBlue}
                             radius={5}
                             size="lg"
+                            disabled={isAdded}
                             onPress={() => {
-                                setCartItems((prev) => {
-                                    const updatedCart = [...prev, courseDetail];
-                                    return updatedCart;
-                                });
+                                handleAddToCart();
                             }}
                         />
                     </View>

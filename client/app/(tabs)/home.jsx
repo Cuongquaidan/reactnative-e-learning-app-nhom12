@@ -28,7 +28,7 @@ const Home = () => {
     const [showCart, setShowCart] = useState(false);
     const [dataCourses, setDataCourses] = useState(null);
     const { cartItems, setCartItems } = useCartItems();
-    console.log(name, email);
+    const { id } = useAuthContext();
     const [dataTeacher, setDataTeacher] = useState(null);
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
@@ -74,6 +74,31 @@ const Home = () => {
     //         slug: "UX-UI-foundation",
     //     },
     // ];
+
+    const handleRemove = async (courseId) => {
+        try {
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/carts/remove`,
+                {
+                    method: "patch",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        accountId: id,
+                        courseId,
+                    }),
+                }
+            );
+
+            if (!response.ok) throw new Error("Error");
+            const data = await response.json();
+
+            setCartItems(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         //
@@ -404,7 +429,7 @@ const Home = () => {
                         alignItems: "center",
                     }}
                 >
-                    {cartItems?.map((item, index) => (
+                    {cartItems?.courses?.map((item, index) => (
                         <View
                             key={index}
                             style={{
@@ -415,16 +440,31 @@ const Home = () => {
                                 borderColor: Colors.lightGray,
                                 borderRadius: 5,
                                 width: "90%",
+                                alignItems: "center",
                             }}
                         >
                             <View>
                                 <Image
-                                    source={{ uri: item.avatar }}
-                                    style={{ width: 40, height: 40 }}
+                                    source={{ uri: item.image }}
+                                    style={{
+                                        width: 60,
+                                        height: 60,
+                                        borderColor: Colors.lightGray,
+                                        borderWidth: 1,
+                                        borderRadius: 5,
+                                    }}
                                 ></Image>
                             </View>
-                            <View>
-                                <Text style={{}}>{item?.courseName}</Text>
+                            <View style={{ flex: 1 }}>
+                                <Text
+                                    style={{
+                                        color: "black",
+                                        fontSize: 20,
+                                        fontWeight: 700,
+                                    }}
+                                >
+                                    {item?.title}
+                                </Text>
                                 <View
                                     style={{
                                         flexDirection: "row",
@@ -433,26 +473,36 @@ const Home = () => {
                                 >
                                     <Text
                                         style={{
-                                            textDecorationLine: "line-through",
-                                            color: Colors.primaryGray,
-                                            fontSize: 16,
+                                            color: Colors.primaryBlue,
+                                            fontSize: 20,
+                                            fontWeight: 700,
                                         }}
                                     >
                                         {item.price}$
                                     </Text>
+                                </View>
+                            </View>
+                            <View style={{ padding: 10 }}>
+                                <Pressable
+                                    style={{
+                                        padding: 10,
+                                        backgroundColor: "pink",
+                                    }}
+                                    onPress={() => handleRemove(item._id)}
+                                >
                                     <Text
                                         style={{
-                                            color: Colors.primaryGray,
-                                            fontSize: 16,
+                                            color: "red",
+                                            fontWeight: 700,
                                         }}
                                     >
-                                        discount: {item.discount} %
+                                        remove
                                     </Text>
-                                </View>
+                                </Pressable>
                             </View>
                         </View>
                     ))}
-                    {cartItems?.length > 0 && (
+                    {cartItems?.courses?.length > 0 && (
                         <Pressable
                             style={{
                                 padding: 15,
@@ -475,7 +525,7 @@ const Home = () => {
                         </Pressable>
                     )}
 
-                    {cartItems?.length === 0 && (
+                    {cartItems?.courses?.length === 0 && (
                         <Text
                             style={{
                                 textAlign: "center",

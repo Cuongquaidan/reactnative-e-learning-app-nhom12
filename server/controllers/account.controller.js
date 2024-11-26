@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import connect from "../database/connect.js";
 import AccountModel from "../models/account.model.js";
+import Cart from "../models/cart.model.js";
+
 export async function register(req, res) {
     await connect();
     try {
@@ -21,6 +23,9 @@ export async function register(req, res) {
         });
 
         const savedAccount = await newAccount.save();
+
+        const cart = new Cart({ accountId: savedAccount._id, courses: [] });
+        await cart.save();
 
         return res.status(201).json({
             message: "Account created successfully",
@@ -50,8 +55,7 @@ export async function login(req, res) {
 
         return res.status(200).json({
             message: "Login Successful...!",
-            email: existingAccount.email,
-            name: existingAccount.username,
+            account: existingAccount,
         });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });

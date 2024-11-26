@@ -9,7 +9,7 @@ import Login from "../components/Login";
 
 const Index = () => {
     // return <Redirect href={"/home"}></Redirect>;
-    const [indexTab, setIndexTab] = useState(0);
+    const [indexTab, setIndexTab] = useState(1);
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
     const navigation = useNavigation();
@@ -18,11 +18,11 @@ const Index = () => {
         const updatedHeights = [...tabHeights];
         updatedHeights[tabIndex] = height;
         setTabHeights(updatedHeights);
-        setContentHeight(updatedHeights[indexTab]); // Cập nhật chiều cao hiện tại
+        setContentHeight(updatedHeights[indexTab]);
     };
 
     useEffect(() => {
-        setContentHeight(tabHeights[indexTab]); // Khi tab thay đổi, cập nhật chiều cao tương ứng
+        setContentHeight(tabHeights[indexTab]);
     }, [indexTab, tabHeights]);
     useEffect(() => {
         navigation.setOptions({
