@@ -2,8 +2,10 @@ import { View, Image, Text, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "../constants/Colors";
 import Constants from "expo-constants";
+import { useRouter } from "expo-router";
 
-const CourseProcess = ({ course }) => {
+const CourseProcess = ({ course,type = "overview"}) => {
+    const router = useRouter();
     const { courseId, process } = course;
 
     const [data, setData] = useState();
@@ -39,6 +41,17 @@ const CourseProcess = ({ course }) => {
                 borderColor: Colors.lightGray,
                 borderRadius: 5,
                 display: "flex",
+            }}
+            onPress={()=>{
+                if(data&&data.slug){
+                    router.push({
+                        pathname: `/${type}/${data.slug}`,
+                        params: {
+                            course: JSON.stringify(data),
+                        },
+                    });
+                }
+
             }}
         >
             <View

@@ -29,8 +29,6 @@ const SavedCourse = ({ courseId, type = "overview" }) => {
                 }
                 const data = await response.json();
                 setCourse(data);
-
-                console.log(data);
             } catch (error) {
                 console.error(`Fetch data error: ${error}`);
             }
