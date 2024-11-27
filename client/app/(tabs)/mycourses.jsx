@@ -13,20 +13,23 @@ const Mycourses = () => {
 
     const { id } = useAuthContext();
     const filterCoursesByTab = () => {
-        switch (indexTab) {
-            case 1: // ON GOING
-                return myCourses.filter(
-                    (course) => parseInt(course.process) < 100
-                );
-            case 2: // COMPLETED
-                return myCourses.filter(
-                    (course) => parseInt(course.process) === 100
-                );
-            default: // ALL
-                return myCourses;
+        if (Array.isArray(myCourses)) {
+            switch (indexTab) {
+                case 1: // ON GOING
+                    return myCourses.filter(
+                        (course) => parseInt(course.process) < 100
+                    );
+                case 2: // COMPLETED
+                    return myCourses.filter(
+                        (course) => parseInt(course.process) === 100
+                    );
+                default: // ALL
+                    return myCourses;
+            }
+        } else {
+            return []; // Trả về mảng rỗng nếu `myCourses` không hợp lệ
         }
     };
-
     const saleOffer = {
         courseName: "PROJECT MANAGEMENT",
         percentSales: 20,
