@@ -23,11 +23,13 @@ import { router } from "expo-router";
 import { useCartItems } from "../../context/CartContext";
 import { useAuthContext } from "../../context/AuthContext";
 import Constants from "expo-constants";
+import { useMyCourses } from "../../context/MyCoursesContext";
 const Home = () => {
     const { name, email } = useAuthContext();
     const [showCart, setShowCart] = useState(false);
     const [dataCourses, setDataCourses] = useState(null);
     const { cartItems, setCartItems } = useCartItems();
+    const { myCourses, setMyCourses } = useMyCourses();
     const { id } = useAuthContext();
     const [dataTeacher, setDataTeacher] = useState(null);
     const saleOffer = {
@@ -36,44 +38,6 @@ const Home = () => {
         slug: "",
         image: "",
     };
-    // const dataCourses = [
-    //     {
-    //         id: 1,
-    //         title: "PHP in One Click",
-    //         category: "Code",
-    //         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
-    //         image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //         price: 59,
-    //         rating: 4.5,
-    //         numberRating: 1233,
-    //         numberOfLessons: 18,
-    //         slug: "UX-UI-foundation",
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "PHP in One Click",
-    //         category: "Code",
-    //         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
-    //         image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //         price: 59,
-    //         rating: 4.5,
-    //         numberRating: 1233,
-    //         numberOfLessons: 18,
-    //         slug: "UX-UI-foundation",
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "PHP in One Click",
-    //         category: "Code",
-    //         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, blanditiis nemo necessitatibus nulla tempore a recusandae eligendi qui labore rem quibusdam deserunt veniam accusamus hic mollitia perspiciatis enim. Ex, sequi!",
-    //         image: "https://images.pexels.com/photos/8135545/pexels-photo-8135545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    //         price: 59,
-    //         rating: 4.5,
-    //         numberRating: 1233,
-    //         numberOfLessons: 18,
-    //         slug: "UX-UI-foundation",
-    //     },
-    // ];
 
     const handleRemove = async (courseId) => {
         try {
@@ -96,7 +60,36 @@ const Home = () => {
 
             setCartItems(data);
         } catch (error) {
-            console.log(error);
+            console.log(error + "remove from cart failed");
+        }
+    };
+
+    const handleCheckOut = async (courseId) => {
+        try {
+            console.log(courseId);
+
+            console.log(id);
+
+            const response = await fetch(
+                `${Constants.expoConfig.extra.API_PREFIX}/accountCourses/create`,
+                {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        accountId: id,
+                        courseId,
+                    }),
+                }
+            );
+            if (!response.ok) console.log(response);
+            const data = await response.json();
+            console.log("mycourses", myCourses, "data:", data);
+            setMyCourses((prev) => [...prev, data]);
+            handleRemove(courseId);
+        } catch (error) {
+            console.log(error + "handle check out failed");
         }
     };
 
@@ -481,48 +474,51 @@ const Home = () => {
                                     </Text>
                                 </View>
                             </View>
-                            <View style={{ padding: 10 }}>
+                            <View
+                                style={{
+                                    width: "20%",
+                                    gap: 10,
+                                }}
+                            >
+                                <View style={{ width: "100%" }}>
+                                    <Pressable
+                                        style={{
+                                            padding: 10,
+                                            backgroundColor: "pink",
+                                        }}
+                                        onPress={() => handleRemove(item._id)}
+                                    >
+                                        <Text
+                                            style={{
+                                                color: "red",
+                                                fontWeight: 700,
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            remove
+                                        </Text>
+                                    </Pressable>
+                                </View>
                                 <Pressable
                                     style={{
                                         padding: 10,
-                                        backgroundColor: "pink",
+                                        backgroundColor: Colors.primaryBlue,
                                     }}
-                                    onPress={() => handleRemove(item._id)}
+                                    onPress={() => handleCheckOut(item._id)}
                                 >
                                     <Text
                                         style={{
-                                            color: "red",
+                                            color: "white",
                                             fontWeight: 700,
+                                            textAlign: "center",
                                         }}
                                     >
-                                        remove
+                                        Check out
                                     </Text>
                                 </Pressable>
                             </View>
                         </View>
                     ))}
-                    {cartItems?.courses?.length > 0 && (
-                        <Pressable
-                            style={{
-                                padding: 15,
-                                backgroundColor: Colors.primaryBlue,
-                                width: 150,
-                                borderRadius: 10,
-                                cursor: "pointer",
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    color: "white",
-                                    fontWeight: 700,
-                                    fontSize: 20,
-                                    textAlign: "center",
-                                }}
-                            >
-                                Check out
-                            </Text>
-                        </Pressable>
-                    )}
 
                     {cartItems?.courses?.length === 0 && (
                         <Text

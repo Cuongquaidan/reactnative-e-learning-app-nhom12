@@ -5,21 +5,24 @@ import { CartProvider } from "../context/CartContext";
 import ChatbotComponent from "../components/ChatbotComponent";
 import { AuthProvider } from "../context/AuthContext";
 import { SavedProvider } from "../context/SaveContext";
+import { MyCoursesProvider } from "../context/MyCoursesContext";
 const RootLayout = () => {
     return (
         <AuthProvider>
             <CartProvider>
                 <SavedProvider>
-                    <Stack>
-                        <Stack.Screen name="index"></Stack.Screen>
-                        <Stack.Screen
-                            name="(tabs)"
-                            options={{
-                                headerShown: false,
-                            }}
-                        ></Stack.Screen>
-                    </Stack>
-                    <ChatbotComponent />
+                    <MyCoursesProvider>
+                        <Stack>
+                            <Stack.Screen name="index"></Stack.Screen>
+                            <Stack.Screen
+                                name="(tabs)"
+                                options={{
+                                    headerShown: false,
+                                }}
+                            ></Stack.Screen>
+                        </Stack>
+                        <ChatbotComponent />
+                    </MyCoursesProvider>
                 </SavedProvider>
             </CartProvider>
         </AuthProvider>
