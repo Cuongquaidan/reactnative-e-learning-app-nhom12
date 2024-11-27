@@ -6,12 +6,12 @@ import { Colors } from "../../constants/Colors";
 import { Tab } from "@rneui/themed";
 import Constants from "expo-constants";
 import { useAuthContext } from "../../context/AuthContext";
+import { useMyCourses } from "../../context/MyCoursesContext";
 
 const Mycourses = () => {
     const [indexTab, setIndexTab] = React.useState(0);
-    const [myCourses, setMyCourses] = useState([]);
+    const { myCourses } = useMyCourses();
 
-    const { id } = useAuthContext();
     const filterCoursesByTab = () => {
         if (Array.isArray(myCourses)) {
             switch (indexTab) {
@@ -36,25 +36,6 @@ const Mycourses = () => {
         slug: "",
         image: "",
     };
-
-    useEffect(() => {
-        try {
-            const fetchMyCourses = async () => {
-                const response = await fetch(
-                    `${Constants.expoConfig.extra.API_PREFIX}/accountCourses/getList/${id}`
-                );
-
-                if (!response.ok) {
-                    throw new Error("Get data failed");
-                }
-                const data = await response.json();
-                setMyCourses(data);
-            };
-            fetchMyCourses();
-        } catch (error) {
-            console.log(error);
-        }
-    }, [id]);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -118,7 +99,7 @@ const Mycourses = () => {
                 </Tab>
                 <FlatList
                     data={filterCoursesByTab()}
-                    keyExtractor={(item) => item.courseId.toString()}
+                    keyExtractor={(item) => item?.courseId?.toString()}
                     renderItem={({ item }) => <CourseProcess course={item} />}
                     ItemSeparatorComponent={
                         <View style={{ height: 15 }}></View>

@@ -14,9 +14,11 @@ import Reviews from "../../components/course/Reviews";
 import { useCartItems } from "../../context/CartContext";
 import Constants from "expo-constants";
 import { useAuthContext } from "../../context/AuthContext";
+import { useMyCourses } from "../../context/MyCoursesContext";
 
 const CourseDetailsOverview = () => {
     const { cartItems, setCartItems } = useCartItems();
+    const { myCourses } = useMyCourses();
     const [indexTab, setIndexTab] = useState(0);
     const [tabHeights, setTabHeights] = useState([0, 0, 0]); // Để lưu chiều cao của từng tab
     const [contentHeight, setContentHeight] = useState(0);
@@ -32,6 +34,15 @@ const CourseDetailsOverview = () => {
     const isAdded = useMemo(() => {
         return cartItems.courses.some((item) => item._id === course._id);
     }, [cartItems]);
+
+    const isMyCourses = useMemo(() => {
+        if (Array.isArray(myCourses)) {
+            return myCourses.some((item) => item.courseId === course._id);
+        } else {
+            return false;
+        }
+    });
+
     useEffect(() => {
         try {
             const getCourseDetail = async () => {
@@ -357,6 +368,7 @@ const CourseDetailsOverview = () => {
                                         size={24}
                                         color={isAdded ? "black" : "white"}
                                     />
+
                                     {isAdded ? (
                                         <Text
                                             style={{
@@ -382,7 +394,7 @@ const CourseDetailsOverview = () => {
                             color={Colors.primaryBlue}
                             radius={5}
                             size="lg"
-                            disabled={isAdded}
+                            disabled={isAdded || isMyCourses}
                             onPress={() => {
                                 handleAddToCart();
                             }}
