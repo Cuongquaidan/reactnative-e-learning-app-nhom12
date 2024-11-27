@@ -25,7 +25,7 @@ export async function getAccountCoursesByAccountId(req, res) {
 
         if (!accountCourses || accountCourses.length === 0) {
             return res
-                .status(404)
+                .status(200)
                 .json({ message: "AccountCourses not found" });
         }
 
